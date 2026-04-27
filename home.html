@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>عَوْن - الرئيسية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'AraHamah';src:url('ABC.ttf') format('truetype')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a52}
+.top-bar{display:flex;justify-content:space-between;align-items:center;padding:0 20px;height:70px;background:#406E8F;position:fixed;top:0;left:0;right:0;z-index:10000;box-shadow:0 2px 15px rgba(64,110,143,.3)}
+.logo-img{height:65px}
+.nav-left-group{display:flex;align-items:center;gap:12px}
+.nav-avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5);cursor:pointer;opacity:0;transition:opacity .3s}
+.menu-icon{font-size:24px;color:white;cursor:pointer}
+.dropdown{position:relative}
+.options-card{display:none;position:absolute;top:55px;left:0;width:190px;background:white;box-shadow:0 10px 30px rgba(0,0,0,.15);border-radius:14px;padding:8px 0;z-index:10001}
+.options-card.show{display:block;animation:fadeDown .2s ease}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.options-card a{color:#333;padding:12px 16px;text-decoration:none;display:block;text-align:right;font-size:14px;border-bottom:1px solid #f5f5f5;transition:.2s;cursor:pointer}
+.options-card a:last-child{border-bottom:none;color:#e74c3c}
+.options-card a:hover{background:#f8f9ff;color:#406E8F}
+
+.main{padding-top:70px}
+.hero{position:relative;height:380px;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover;filter:brightness(.75)}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to left,rgba(10,42,82,.75) 0%,rgba(10,42,82,.35) 50%,transparent 100%)}
+.hero-content{position:absolute;top:50%;right:50px;transform:translateY(-50%);color:white;max-width:380px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:4px 12px;font-size:11px;margin-bottom:14px}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:#a8ddf0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.hero-title{font-size:36px;font-weight:900;line-height:1.15;margin-bottom:10px}
+.hero-title em{font-style:normal;color:#a8ddf0}
+.hero-desc{font-size:13px;opacity:.85;line-height:1.8;font-weight:300}
+
+/* Live summary card */
+.live-summary{margin:24px 24px 0;background:white;border-radius:18px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.live-summary-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.live-summary-header h3{font-size:16px;font-weight:800;color:#406E8F;display:flex;align-items:center;gap:8px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#1D9E75;animation:pulse 1.5s infinite}
+.live-summary-time{font-size:11px;color:#999}
+.live-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.live-item{text-align:center;padding:14px 8px;background:#f8fafc;border-radius:12px;border:1px solid #e8f0f5}
+.live-icon{font-size:24px;margin-bottom:6px}
+.live-value{font-size:20px;font-weight:900;color:#0a2a52}
+.live-unit{font-size:10px;color:#999;margin-top:2px}
+.health-score-bar{margin-top:16px;height:8px;border-radius:4px;background:#f0f0f0;overflow:hidden}
+.health-score-fill{height:100%;background:linear-gradient(to left,#1D9E75,#406E8F);border-radius:4px;transition:width 1s}
+
+.quick-access{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:24px}
+.quick-card{border-radius:18px;text-decoration:none;display:block;position:relative;overflow:hidden;height:160px;transition:.3s;box-shadow:0 6px 20px rgba(64,110,143,.2)}
+.quick-card:nth-child(1){background:linear-gradient(135deg,#1a4a6e,#406E8F,#5a8fad)}
+.quick-card:nth-child(2){background:linear-gradient(135deg,#0d3352,#2e6080,#406E8F)}
+.quick-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(64,110,143,.35)}
+.qc-content{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;justify-content:flex-end}
+.qc-line{width:26px;height:2.5px;background:rgba(255,255,255,.7);border-radius:2px;margin-bottom:8px}
+.qc-title{font-size:17px;font-weight:900;color:white;margin-bottom:4px}
+.qc-desc{font-size:10px;color:rgba(255,255,255,.8);font-weight:300}
+
+.products{padding:0 24px 36px}
+.products h2{font-size:17px;font-weight:800;color:#406E8F;margin-bottom:16px}
+.prod-grid{display:flex;justify-content:center;gap:16px}
+.prod-card{width:200px;height:200px;border-radius:20px;overflow:hidden;position:relative;flex-shrink:0;box-shadow:0 6px 24px rgba(0,0,0,.15);cursor:pointer;transition:.25s;border:3px solid white}
+.prod-card:hover{transform:scale(1.05);box-shadow:0 12px 30px rgba(64,110,143,.25)}
+.prod-card img{width:100%;height:100%;object-fit:cover}
+.prod-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(30,50,80,.82));padding:10px 10px 12px}
+.prod-name{font-size:13px;font-weight:700;color:white;text-align:center}
+
+.footer-wrap{background:#406E8F}
+.footer-about{padding:28px 24px 22px;border-bottom:1px solid rgba(255,255,255,.12)}
+.footer-about-h{font-size:15px;font-weight:800;color:white;margin-bottom:10px}
+.footer-about-p{font-size:12px;color:rgba(255,255,255,.75);font-weight:300;line-height:1.9}
+.footer-bottom{padding:20px 24px;text-align:center;color:rgba(255,255,255,.8);font-size:13px}
+
+@media(max-width:600px){.live-grid{grid-template-columns:repeat(2,1fr)}.hero-title{font-size:28px}.quick-access{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+    <img src="slogan1.jpg" class="logo-img" alt="عون">
+    <div class="nav-left-group">
+        <div class="dropdown">
+            <span class="menu-icon" id="menuBtn">☰</span>
+            <div class="options-card" id="optionsCard">
+                <a href="home.html">الرئيسية</a>
+                <a href="device-status.html">حالة الجهاز</a>
+                <a href="family.html">صحة عائلتك</a>
+                <a href="avatar.html">الملف الشخصي</a>
+                <a onclick="handleLogout()">تسجيل الخروج</a>
+            </div>
+        </div>
+        <a href="avatar.html"><img src="avatar_male.jpg" class="nav-avatar" id="nav-avatar-img" alt=""></a>
+    </div>
+</header>
+
+<div class="main">
+    <div class="hero">
+        <img src="hero.jpg" alt="عون">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge"><div class="badge-dot"></div>نظام مراقبة صحي ذكي</div>
+            <h1 class="hero-title">عَـــون<br><em>رفيقك الصحي</em></h1>
+            <p class="hero-desc">عَوْن يراقب صحة عائلتك على مدار الساعة</p>
+        </div>
+    </div>
+
+    <!-- Live Summary -->
+    <div class="live-summary">
+        <div class="live-summary-header">
+            <h3><span class="live-dot"></span>الحالة الحالية</h3>
+            <span class="live-summary-time" id="last-update">--</span>
+        </div>
+        <div class="live-grid">
+            <div class="live-item"><div class="live-icon">❤️</div><div class="live-value" id="hr-val">--</div><div class="live-unit">BPM</div></div>
+            <div class="live-item"><div class="live-icon">👟</div><div class="live-value" id="steps-val">--</div><div class="live-unit">خطوة</div></div>
+            <div class="live-item"><div class="live-icon">🔋</div><div class="live-value" id="bat-val">--</div><div class="live-unit">بطارية</div></div>
+            <div class="live-item"><div class="live-icon">💯</div><div class="live-value" id="score-val">--</div><div class="live-unit">مؤشر</div></div>
+        </div>
+        <div class="health-score-bar"><div class="health-score-fill" id="score-bar" style="width:0%"></div></div>
+    </div>
+
+    <div class="quick-access">
+        <a href="device-status.html" class="quick-card">
+            <div class="qc-content">
+                <div class="qc-line"></div>
+                <div class="qc-title">حالة الجهاز</div>
+                <div class="qc-desc">راقب الجهاز والبطارية وتحدث مع المساعد الذكي</div>
+            </div>
+        </a>
+        <a href="family.html" class="quick-card">
+            <div class="qc-content">
+                <div class="qc-line"></div>
+                <div class="qc-title">صحة عائلتك</div>
+                <div class="qc-desc">تابع صحة أفراد عائلتك وأدر جدول العلاجات</div>
+            </div>
+        </a>
+    </div>
+
+    <div class="products">
+        <h2>منتجات عَوْن</h2>
+        <div class="prod-grid">
+            <div class="prod-card"><img src="a1.jpg" alt=""><div class="prod-overlay"><div class="prod-name">ساعة عَوْن</div></div></div>
+            <div class="prod-card"><img src="a2.jpg" alt=""><div class="prod-overlay"><div class="prod-name">جهاز عَوْن</div></div></div>
+        </div>
+    </div>
+
+    <div class="footer-wrap">
+        <div class="footer-about">
+            <div class="footer-about-h">نظام صحي ذكي ومتكامل</div>
+            <p class="footer-about-p">عَوْن يجمع بين الساعة الذكية والجهاز المنزلي لمراقبة صحة عائلتك مع مساعد ذكي وتنبيهات فورية.</p>
+        </div>
+        <div class="footer-bottom">رقم التواصل: 0550936622</div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL='https://binqgggvhbbxetasomhv.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbnFnZ2d2aGJieGV0YXNvbWh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjQ1MzYsImV4cCI6MjA5MDkwMDUzNn0.oav0nAJDdPJRpx5qNTY7eA7xqIBi9xqCPsJuRDeloe4';
+const _supabase=supabase.createClient(SB_URL,SB_KEY);
+
+function calcHealthScore(d){
+    let s=0;
+    if(d.heart_rate){const h=d.heart_rate;if(h>=60&&h<=100)s+=40;else if(h>=50&&h<=110)s+=30;else if(h>=40&&h<=130)s+=20;else s+=10}
+    if(d.steps)s+=Math.min((d.steps/10000)*30,30);
+    if(d.battery)s+=Math.min((d.battery/100)*20,20);
+    if(d.oxygen&&d.oxygen>=95)s+=5;
+    if(d.latitude)s+=5;
+    return Math.round(Math.max(0,Math.min(100,s)));
+}
+
+function timeAgo(t){
+    if(!t)return'--';
+    const diff=Math.floor((Date.now()-new Date(t).getTime())/1000);
+    if(diff<60)return'الآن';
+    if(diff<3600)return`قبل ${Math.floor(diff/60)} دقيقة`;
+    if(diff<86400)return`قبل ${Math.floor(diff/3600)} ساعة`;
+    return`قبل ${Math.floor(diff/86400)} يوم`;
+}
+
+async function init(){
+    const{data:{session}}=await _supabase.auth.getSession();
+    if(!session){window.location.href='index.html';return}
+    loadAvatar(session.user.id);
+    loadLive(session.user.id);
+    setInterval(()=>loadLive(session.user.id),15000);
+}
+async function loadAvatar(uid){
+    const{data}=await _supabase.from('users').select('gender').eq('id',uid).single();
+    const src=data?.gender==='female'?'avatar_female.jpg':'avatar_male.jpg';
+    document.querySelectorAll('.nav-avatar').forEach(img=>{img.src=src;img.onload=()=>img.style.opacity='1';if(img.complete)img.style.opacity='1'})
+}
+async function loadLive(uid){
+    const{data}=await _supabase.from('persons').select('devices(*)').eq('user_id',uid).limit(1);
+    if(!data||!data.length||!data[0].devices?.length)return;
+    const d=data[0].devices[0];
+    document.getElementById('hr-val').textContent=d.heart_rate||'--';
+    document.getElementById('steps-val').textContent=d.steps?.toLocaleString()||'0';
+    document.getElementById('bat-val').textContent=d.battery!=null?d.battery+'%':'--';
+    const score=calcHealthScore(d);
+    document.getElementById('score-val').textContent=score;
+    document.getElementById('score-bar').style.width=score+'%';
+    document.getElementById('last-update').textContent=timeAgo(d.updated_at);
+}
+async function handleLogout(){await _supabase.auth.signOut();window.location.href='index.html'}
+const menuBtn=document.getElementById('menuBtn'),optionsCard=document.getElementById('optionsCard');
+menuBtn.onclick=e=>{e.stopPropagation();optionsCard.classList.toggle('show')};
+document.onclick=()=>optionsCard.classList.remove('show');
+init();
+</script>
+</body>
+</html>

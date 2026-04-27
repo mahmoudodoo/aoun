@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عون - صحة العائلة</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'AraHamah';src:url('ABC.ttf.ttf') format('truetype')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a52}
+
+.top-bar{position:fixed;top:0;left:0;right:0;height:70px;background:#406E8F;display:flex;justify-content:space-between;align-items:center;padding:0 20px;z-index:10000;box-shadow:0 2px 15px rgba(64,110,143,.3)}
+.logo-img{height:65px}
+.nav-left-group{display:flex;align-items:center;gap:12px}
+.nav-avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5);cursor:pointer;opacity:0;transition:opacity .3s}
+.menu-icon{font-size:24px;color:white;cursor:pointer}
+.dropdown{position:relative}
+.options-card{display:none;position:absolute;top:55px;left:0;width:190px;background:white;box-shadow:0 10px 30px rgba(0,0,0,.15);border-radius:14px;padding:8px 0;z-index:10001;animation:fadeDown .2s ease}
+.options-card.show{display:block}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.options-card a{color:#333;padding:12px 16px;text-decoration:none;display:block;text-align:right;border-bottom:1px solid #f5f5f5;font-size:14px;transition:.2s}
+.options-card a:last-child{border-bottom:none;color:#e74c3c}
+.options-card a:hover{background:#f8f9ff;color:#406E8F}
+
+.container{display:flex;height:100vh;padding-top:70px}
+
+.sidebar{width:240px;background:#2e516b;padding:20px 16px;color:white;overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;gap:8px}
+.sidebar-title{font-size:16px;font-weight:800;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.15);text-align:center}
+.person-row{display:flex;align-items:center;gap:8px}
+.person-btn{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:white;padding:10px 14px;border-radius:10px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;text-align:right;transition:.2s}
+.person-btn:hover{background:rgba(255,255,255,.2)}
+.person-btn.active{background:#406E8F;border-color:#406E8F}
+.delete-btn{background:rgba(231,76,60,.2);color:#ff8a80;border:1px solid rgba(231,76,60,.3);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
+.delete-btn:hover{background:#e74c3c;color:white}
+.add-person-btn{width:100%;margin-top:8px;padding:11px;background:rgba(255,255,255,.12);border:1px dashed rgba(255,255,255,.3);color:rgba(255,255,255,.8);border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Tajawal',sans-serif;transition:.2s}
+.add-person-btn:hover{background:rgba(255,255,255,.2);color:white}
+
+.dashboard{flex:1;padding:24px;overflow-y:auto}
+
+.person-header{background:white;border-radius:16px;padding:20px 24px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;border-right:4px solid #406E8F}
+.person-header h2{font-size:20px;font-weight:900;color:#406E8F;margin-bottom:4px}
+.person-header p{font-size:12px;color:#aaa;font-weight:300}
+.person-header-tag{background:#e8f3f8;color:#2e516b;border-radius:50px;padding:5px 14px;font-size:11px;font-weight:700;border:1px solid #c5dce8}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.stat-card{background:white;border-radius:14px;padding:18px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid #406E8F;transition:.25s}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(64,110,143,.14)}
+.stat-label{font-size:11px;color:#aaa;font-weight:300;margin-bottom:8px}
+.stat-value{font-size:22px;font-weight:900;color:#406E8F}
+.stat-unit{font-size:11px;color:#aaa;margin-top:2px;font-weight:300}
+
+.map-box{background:white;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.box-title{font-size:15px;font-weight:800;color:#406E8F;margin-bottom:14px}
+.map-box iframe{width:100%;height:220px;border:none;border-radius:12px}
+.no-gps{text-align:center;padding:30px;color:#ccc;font-size:13px;background:#f8fafc;border-radius:12px}
+
+.section-box{background:white;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.add-med-btn{background:#406E8F;color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Tajawal',sans-serif;transition:.2s}
+.add-med-btn:hover{background:#2e516b}
+
+.med-card{display:flex;justify-content:space-between;align-items:flex-start;background:#f8fafc;border-radius:12px;padding:14px 16px;margin-bottom:10px;border-right:3px solid #406E8F;gap:12px;transition:.2s}
+.med-card:hover{box-shadow:0 4px 12px rgba(64,110,143,.1)}
+.med-info h4{font-size:14px;font-weight:800;color:#0a2a52;margin-bottom:4px}
+.med-info p{font-size:11px;color:#888;font-weight:300;margin-bottom:6px}
+.med-badges{display:flex;gap:5px;flex-wrap:wrap}
+.badge-time{background:#406E8F;color:white;border-radius:50px;padding:3px 10px;font-size:10px;font-weight:700}
+.badge-day{background:#e8f3f8;color:#2e516b;border-radius:50px;padding:3px 10px;font-size:10px;font-weight:700;border:1px solid #c5dce8}
+.del-med-btn{background:#fdecea;color:#e74c3c;border:1px solid #f5c6c6;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:11px;font-weight:700;font-family:'Tajawal',sans-serif;white-space:nowrap;flex-shrink:0;transition:.2s}
+.del-med-btn:hover{background:#e74c3c;color:white}
+
+.no-data{text-align:center;padding:24px;color:#ccc;font-size:13px;background:#f8fafc;border-radius:12px}
+.loading{text-align:center;padding:40px;color:#406E8F;font-size:16px}
+.empty{text-align:center;padding:60px 20px;color:#bbb;font-size:14px}
+
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.45);z-index:20000;justify-content:center;align-items:center}
+.modal-overlay.show{display:flex}
+.modal{background:white;border-radius:20px;padding:28px;width:360px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:modalIn .25s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal h3{color:#406E8F;font-size:17px;font-weight:900;margin-bottom:20px}
+.modal input{width:100%;padding:11px 14px;border:1.5px solid #e0eaf0;border-radius:10px;margin-bottom:12px;font-size:13px;font-family:'Tajawal',sans-serif;text-align:right;transition:.2s;outline:none}
+.modal input:focus{border-color:#406E8F}
+.modal-btns{display:flex;gap:10px;margin-top:14px}
+.modal-btns button{flex:1;padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Tajawal',sans-serif;transition:.2s}
+.btn-confirm{background:#406E8F;color:white}
+.btn-confirm:hover{background:#2e516b}
+.btn-cancel{background:#f0f0f0;color:#555}
+.btn-cancel:hover{background:#e0e0e0}
+
+.input-label{display:block;font-size:12px;font-weight:700;color:#406E8F;margin-bottom:8px}
+.days-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.day-btn{padding:5px 12px;border-radius:50px;border:1.5px solid #e0eaf0;cursor:pointer;font-size:11px;font-weight:700;font-family:'Tajawal',sans-serif;color:#888;transition:.2s}
+.day-btn.active{background:#406E8F;color:white;border-color:#406E8F}
+.time-row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+.time-row input{flex:1;padding:9px 12px;border:1.5px solid #e0eaf0;border-radius:10px;font-size:13px;outline:none}
+.time-row input:focus{border-color:#406E8F}
+.add-time-btn{background:#e8f3f8;color:#406E8F;border:none;border-radius:8px;padding:9px 12px;cursor:pointer;font-size:16px;font-weight:700}
+.remove-time-btn{background:#fdecea;color:#e74c3c;border:none;border-radius:8px;padding:9px 10px;cursor:pointer;font-size:14px;font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+    <img src="slogan1.jpg" class="logo-img" alt="عون">
+    <div class="nav-left-group">
+        <div class="dropdown">
+            <span class="menu-icon" id="menuBtn">☰</span>
+            <div class="options-card" id="optionsCard">
+                <a href="home.html">الرئيسية</a>
+                <a href="Device status.html">حالة الجهاز</a>
+                <a href="family.html">صحة عائلتك</a>
+                <a href="#" onclick="handleLogout()">تسجيل الخروج</a>
+            </div>
+        </div>
+        <a href="avatar.html"><img src="avatar_male.jpg" class="nav-avatar" id="nav-avatar-img" alt="الملف الشخصي"></a>
+    </div>
+</header>
+
+<div class="modal-overlay" id="addPersonModal">
+    <div class="modal">
+        <h3>إضافة فرد جديد</h3>
+        <input type="text" id="new-name"  placeholder="اسم الفرد">
+        <input type="text" id="new-watch" placeholder="كود الساعة (اختياري)">
+        <div class="modal-btns">
+            <button class="btn-confirm" onclick="confirmAddPerson()">إضافة</button>
+            <button class="btn-cancel"  onclick="closeModal('addPersonModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="addMedModal">
+    <div class="modal">
+        <h3>إضافة علاج جديد</h3>
+        <input type="text" id="med-name"  placeholder="اسم العلاج">
+        <input type="text" id="med-dose"  placeholder="الجرعة (مثال: حبة واحدة)">
+        <input type="text" id="med-notes" placeholder="ملاحظات (اختياري)">
+        <label class="input-label">أيام العلاج</label>
+        <div class="days-grid" id="days-grid">
+            <div class="day-btn active" onclick="toggleDay(this)">السبت</div>
+            <div class="day-btn active" onclick="toggleDay(this)">الأحد</div>
+            <div class="day-btn active" onclick="toggleDay(this)">الاثنين</div>
+            <div class="day-btn active" onclick="toggleDay(this)">الثلاثاء</div>
+            <div class="day-btn active" onclick="toggleDay(this)">الأربعاء</div>
+            <div class="day-btn active" onclick="toggleDay(this)">الخميس</div>
+            <div class="day-btn active" onclick="toggleDay(this)">الجمعة</div>
+        </div>
+        <label class="input-label">أوقات العلاج</label>
+        <div class="times-section" id="times-container">
+            <div class="time-row">
+                <input type="time" class="med-time-input">
+                <button class="add-time-btn" onclick="addTimeRow()">+</button>
+            </div>
+        </div>
+        <div class="modal-btns">
+            <button class="btn-confirm" onclick="confirmAddMed()">إضافة</button>
+            <button class="btn-cancel"  onclick="closeModal('addMedModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="sidebar">
+        <div class="sidebar-title">العائلة</div>
+        <div id="persons-list"><div class="loading">جاري التحميل...</div></div>
+        <button class="add-person-btn" onclick="openModal('addPersonModal')">+ إضافة فرد</button>
+    </div>
+    <div class="dashboard">
+        <div id="dashboard-content"><div class="empty">اختر شخصاً من القائمة لعرض بياناته</div></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SB_URL='https://binqgggvhbbxetasomhv.supabase.co';
+    const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbnFnZ2d2aGJieGV0YXNvbWh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjQ1MzYsImV4cCI6MjA5MDkwMDUzNn0.oav0nAJDdPJRpx5qNTY7eA7xqIBi9xqCPsJuRDeloe4';
+    const _supabase=supabase.createClient(SB_URL,SB_KEY);
+    let allPersons=[],currentUserId=null,selectedPersonId=null;
+
+    async function init(){
+        const{data:{session}}=await _supabase.auth.getSession();
+        if(!session){window.location.href='index.html';return}
+        currentUserId=session.user.id;
+        await loadAvatar(currentUserId);
+        loadPersons(currentUserId);
+        if(Notification.permission!=='granted') Notification.requestPermission();
+        checkMedicationAlerts();
+        setInterval(checkMedicationAlerts,60000);
+    }
+
+    async function loadAvatar(userId){
+        const{data}=await _supabase.from('users').select('gender').eq('id',userId).single();
+        const src=data?.gender==='female'?'avatar_female.jpg':'avatar_male.jpg';
+        document.querySelectorAll('.nav-avatar').forEach(img=>{img.src=src;img.onload=()=>img.style.opacity='1';if(img.complete)img.style.opacity='1'});
+    }
+
+    async function loadPersons(userId){
+        const{data,error}=await _supabase.from('persons').select('id,person_name,watch_code,devices(steps,latitude,longitude,battery)').eq('user_id',userId);
+        if(error){document.getElementById('persons-list').innerHTML='<div style="color:rgba(255,255,255,.6);text-align:center;font-size:13px">خطأ في تحميل البيانات</div>';return}
+        allPersons=data;
+        renderSidebar(data);
+        if(data.length>0) showPerson(data[0].id);
+        else document.getElementById('persons-list').innerHTML='<div style="color:rgba(255,255,255,.5);text-align:center;font-size:13px;padding:20px 0">لا يوجد أفراد</div>';
+    }
+
+    function renderSidebar(persons){
+        if(!persons.length){document.getElementById('persons-list').innerHTML='<div style="color:rgba(255,255,255,.5);text-align:center;font-size:13px;padding:20px 0">لا يوجد أفراد</div>';return}
+        document.getElementById('persons-list').innerHTML=persons.map(p=>`
+            <div class="person-row">
+                <div class="person-btn" id="btn-${p.id}" onclick="showPerson('${p.id}')">${p.person_name}</div>
+                <button class="delete-btn" onclick="deletePerson('${p.id}','${p.person_name}')">✕</button>
+            </div>`).join('');
+    }
+
+    async function showPerson(personId){
+        selectedPersonId=personId;
+        document.querySelectorAll('.person-btn').forEach(w=>w.classList.remove('active'));
+        document.getElementById('btn-'+personId)?.classList.add('active');
+        const person=allPersons.find(p=>p.id===personId);
+        if(!person) return;
+        const d=person.devices?.[0]??{};
+        const mapHTML=(d.latitude&&d.longitude)
+            ?`<div class="map-box"><div class="box-title">الموقع الحالي</div><iframe src="https://www.google.com/maps?q=${d.latitude},${d.longitude}&z=15&output=embed" allowfullscreen></iframe></div>`
+            :`<div class="map-box"><div class="box-title">الموقع الحالي</div><div class="no-gps">لا يوجد موقع GPS متاح حالياً</div></div>`;
+        document.getElementById('dashboard-content').innerHTML=`
+            <div class="person-header">
+                <div><h2>${person.person_name}</h2><p>${person.watch_code?'كود الساعة: '+person.watch_code:'بدون ساعة مرتبطة'}</p></div>
+                <div class="person-header-tag">عضو العائلة</div>
+            </div>
+            <div class="stats-row">
+                <div class="stat-card"><div class="stat-label">الخطوات اليوم</div><div class="stat-value">${(d.steps??0).toLocaleString()}</div><div class="stat-unit">خطوة</div></div>
+                <div class="stat-card"><div class="stat-label">البطارية</div><div class="stat-value">${d.battery??'--'}</div><div class="stat-unit">${d.battery?'%':''}</div></div>
+                <div class="stat-card"><div class="stat-label">العلاجات</div><div class="stat-value" id="med-count">...</div><div class="stat-unit">علاج</div></div>
+            </div>
+            ${mapHTML}
+            <div class="section-box">
+                <div class="section-header">
+                    <div class="box-title" style="margin:0">جدول العلاجات</div>
+                    <button class="add-med-btn" onclick="openModal('addMedModal')">+ إضافة علاج</button>
+                </div>
+                <div id="medications-list"><div class="loading">جاري التحميل...</div></div>
+            </div>`;
+        loadMedications(personId);
+    }
+
+    async function loadMedications(personId){
+        const{data,error}=await _supabase.from('medications').select('*').eq('person_id',personId).eq('active',true).order('created_at',{ascending:false});
+        const list=document.getElementById('medications-list');
+        const countEl=document.getElementById('med-count');
+        if(countEl) countEl.textContent=data?.length??0;
+        if(error||!data||!data.length){list.innerHTML='<div class="no-data">لا يوجد علاجات مضافة</div>';return}
+        list.innerHTML=data.map(med=>`
+            <div class="med-card">
+                <div class="med-info">
+                    <h4>${med.name}</h4>
+                    <p>${med.dose??''} ${med.notes?'— '+med.notes:''}</p>
+                    <div class="med-badges">${(med.times||[]).map(t=>`<span class="badge-time">${t}</span>`).join('')}</div>
+                    <div class="med-badges" style="margin-top:5px">${(med.days||[]).map(d=>`<span class="badge-day">${d}</span>`).join('')}</div>
+                </div>
+                <button class="del-med-btn" onclick="deleteMed('${med.id}')">حذف</button>
+            </div>`).join('');
+    }
+
+    function toggleDay(el){el.classList.toggle('active')}
+    function addTimeRow(){
+        const row=document.createElement('div');
+        row.className='time-row';
+        row.innerHTML='<input type="time" class="med-time-input"><button class="remove-time-btn" onclick="this.parentElement.remove()">×</button>';
+        document.getElementById('times-container').appendChild(row);
+    }
+
+    async function confirmAddMed(){
+        const name=document.getElementById('med-name').value.trim();
+        const dose=document.getElementById('med-dose').value.trim();
+        const notes=document.getElementById('med-notes').value.trim();
+        if(!name){alert('يرجى إدخال اسم العلاج');return}
+        if(!selectedPersonId){alert('اختر شخصاً أولاً');return}
+        const days=Array.from(document.querySelectorAll('.day-btn.active')).map(b=>b.textContent);
+        if(!days.length){alert('يرجى اختيار يوم على الأقل');return}
+        const times=Array.from(document.querySelectorAll('.med-time-input')).map(i=>i.value).filter(t=>t!=='');
+        if(!times.length){alert('يرجى إضافة وقت على الأقل');return}
+        const{error}=await _supabase.from('medications').insert([{person_id:selectedPersonId,name,dose,notes,times,days,active:true}]);
+        if(error){alert('خطأ: '+error.message);return}
+        document.getElementById('med-name').value='';
+        document.getElementById('med-dose').value='';
+        document.getElementById('med-notes').value='';
+        document.querySelectorAll('.day-btn').forEach(b=>b.classList.add('active'));
+        document.getElementById('times-container').innerHTML='<div class="time-row"><input type="time" class="med-time-input"><button class="add-time-btn" onclick="addTimeRow()">+</button></div>';
+        closeModal('addMedModal');
+        loadMedications(selectedPersonId);
+    }
+
+    async function deleteMed(medId){
+        if(!confirm('هل تريد حذف هذا العلاج؟')) return;
+        await _supabase.from('medications').update({active:false}).eq('id',medId);
+        loadMedications(selectedPersonId);
+    }
+
+    function checkMedicationAlerts(){
+        if(!selectedPersonId) return;
+        const now=new Date();
+        const daysAr=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+        const todayAr=daysAr[now.getDay()];
+        const currentTime=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+        _supabase.from('medications').select('name,times,days').eq('person_id',selectedPersonId).eq('active',true).then(({data})=>{
+            if(!data) return;
+            data.forEach(med=>{
+                if((!med.days||med.days.includes(todayAr))&&med.times?.includes(currentTime)&&Notification.permission==='granted')
+                    new Notification('وقت العلاج!',{body:`حان وقت أخذ: ${med.name}`,icon:'slogan1.jpg'});
+            });
+        });
+    }
+
+    async function confirmAddPerson(){
+        const name=document.getElementById('new-name').value.trim();
+        const watchCode=document.getElementById('new-watch').value.trim();
+        if(!name){alert('يرجى إدخال اسم الفرد');return}
+        const{data:pData,error}=await _supabase.from('persons').insert([{user_id:currentUserId,person_name:name,watch_code:watchCode||null}]).select();
+        if(error){alert('خطأ: '+error.message);return}
+        await _supabase.from('devices').insert([{person_id:pData[0].id,steps:0,smoke:false}]);
+        closeModal('addPersonModal');
+        document.getElementById('new-name').value='';
+        document.getElementById('new-watch').value='';
+        loadPersons(currentUserId);
+    }
+
+    async function deletePerson(personId,personName){
+        if(!confirm(`هل تريد حذف "${personName}"؟`)) return;
+        await _supabase.from('medications').delete().eq('person_id',personId);
+        await _supabase.from('devices').delete().eq('person_id',personId);
+        const{error}=await _supabase.from('persons').delete().eq('id',personId);
+        if(error){alert('خطأ: '+error.message);return}
+        document.getElementById('dashboard-content').innerHTML='<div class="empty">اختر شخصاً من القائمة لعرض بياناته</div>';
+        loadPersons(currentUserId);
+    }
+
+    function openModal(id){document.getElementById(id).classList.add('show')}
+    function closeModal(id){document.getElementById(id).classList.remove('show')}
+    document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',function(e){if(e.target===this)this.classList.remove('show')}));
+    async function handleLogout(){await _supabase.auth.signOut();window.location.href='index.html'}
+    const menuBtn=document.getElementById('menuBtn');
+    const optionsCard=document.getElementById('optionsCard');
+    menuBtn.onclick=e=>{e.stopPropagation();optionsCard.classList.toggle('show')};
+    document.onclick=()=>optionsCard.classList.remove('show');
+    init();
+</script>
+</body>
+</html>

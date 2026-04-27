@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>عَوْن</title>
+<style>
+@font-face{font-family:'AraHamah';src:url('ABC.ttf') format('truetype')}
+*{box-sizing:border-box;margin:0;padding:0}
+body,html{height:100%;width:100%;overflow:hidden;font-family:'AraHamah',sans-serif}
+.splash-screen{position:fixed;inset:0;background:linear-gradient(135deg,#406E8F,#7093AD);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;cursor:pointer;user-select:none;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+.splash-screen.slide-up{transform:translateY(-100%)}
+.splash-logo{width:280px;margin-bottom:20px;animation:fadeInDown 1s ease}
+.splash-subtitle{color:rgba(255,255,255,.85);font-size:18px;margin-bottom:60px;animation:fadeInDown 1.2s ease}
+.swipe-hint{position:absolute;bottom:50px;display:flex;flex-direction:column;align-items:center;gap:10px;animation:bounce 1.5s infinite}
+.swipe-hint span{color:white;font-size:14px;opacity:.8}
+.swipe-arrow{font-size:28px;color:white}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.auth-screen{width:100vw;height:100vh;display:flex;opacity:0;transition:opacity .4s ease .3s}
+.auth-screen.visible{opacity:1}
+.left-panel{flex:1;background:linear-gradient(135deg,#406E8F,#7093AD);position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;padding:20px}
+.left-panel::after{content:"";position:absolute;right:-40px;top:50%;transform:translateY(-50%);width:80px;height:80px;background:#fff;border-radius:50%;z-index:2}
+.side-title{margin:10px 0;font-weight:bold;cursor:pointer;transition:.4s}
+.side-title.active{font-size:2.2rem;border-bottom:3px solid white;padding-bottom:5px;opacity:1}
+.side-title.inactive{opacity:.4;font-size:1.2rem}
+.right-panel{flex:1.5;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px;background:white;overflow-y:auto}
+.profile-pic{width:110px;height:110px;border-radius:50%;border:4px solid #406E8F;margin-bottom:25px;object-fit:cover;background:#cedde8}
+.form-container{width:65%;max-width:450px}
+.form-content{display:none;animation:fadeIn .5s ease}
+.form-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.input-group{border-bottom:2px solid #406E8F;margin-bottom:15px;display:flex;align-items:center}
+.input-group input{border:none;background:none;width:100%;padding:10px;outline:none;font-size:1.1rem;text-align:right;font-family:'AraHamah',sans-serif}
+.gender-group{display:flex;gap:15px;margin-bottom:20px;justify-content:center}
+.gender-option{flex:1;padding:12px;border:2px solid #ccc;border-radius:15px;text-align:center;cursor:pointer;transition:.3s;font-size:14px;font-weight:bold;color:#666;font-family:'AraHamah',sans-serif}
+.gender-option:hover{border-color:#406E8F;color:#406E8F}
+.gender-option.selected{border-color:#406E8F;background:#e8f0fe;color:#406E8F}
+.gender-option span{display:block;font-size:30px;margin-bottom:5px}
+.action-btn{width:100%;background:#406E8F;color:white;border:none;padding:12px;border-radius:30px;font-size:1.2rem;font-weight:bold;cursor:pointer;margin-top:15px;transition:.3s;font-family:'AraHamah',sans-serif}
+.action-btn:hover{background:#2e516b}
+.action-btn:disabled{background:#aaa;cursor:not-allowed}
+.extra-links{margin-top:15px;text-align:center}
+.extra-links a{color:#406E8F;text-decoration:none;font-size:.95rem;cursor:pointer}
+.extra-links a:hover{text-decoration:underline}
+.form-title{text-align:center;color:#406E8F;font-size:15px;margin-bottom:20px;line-height:1.6}
+.success-msg,.error-msg{border-radius:10px;padding:12px;margin-top:15px;font-size:14px;text-align:center;display:none}
+.success-msg.show{display:block;background:#e6f4ea;color:#2d6a3f;border:1px solid #a8d5b5}
+.error-msg.show{display:block;background:#fdecea;color:#a61c00;border:1px solid #f5c6c6}
+</style>
+</head>
+<body>
+
+<div class="splash-screen" id="splashScreen">
+    <img src="slogan1.jpg" class="splash-logo" alt="عون">
+    <p class="splash-subtitle">رفيقك الصحي الذكي</p>
+    <div class="swipe-hint"><div class="swipe-arrow">↑</div><span>اسحب للأعلى أو اضغط للمتابعة</span></div>
+</div>
+
+<div class="auth-screen" id="authScreen">
+    <div class="left-panel">
+        <div id="login-tab" class="side-title active" onclick="showForm('login')">LOGIN</div>
+        <div id="signup-tab" class="side-title inactive" onclick="showForm('signup')">SIGN UP</div>
+    </div>
+    <div class="right-panel">
+        <img id="profile-avatar" src="avatar_device.jpg" class="profile-pic" alt="عون">
+        <div class="form-container">
+            <div id="login-form" class="form-content active">
+                <div class="input-group"><input type="email" id="login-email" placeholder="البريد الإلكتروني"></div>
+                <div class="input-group"><input type="password" id="login-password" placeholder="كلمة المرور"></div>
+                <div id="login-error" class="error-msg"></div>
+                <button class="action-btn" id="login-btn" onclick="handleLogin()">دخول</button>
+                <div class="extra-links"><a onclick="showForm('reset-request')">نسيت كلمة المرور؟</a></div>
+            </div>
+            <div id="signup-form" class="form-content">
+                <div class="input-group"><input type="text" id="signup-user" placeholder="اسم المستخدم"></div>
+                <div class="input-group"><input type="email" id="signup-email" placeholder="البريد الإلكتروني"></div>
+                <div class="input-group"><input type="tel" id="signup-phone" placeholder="رقم الجوال"></div>
+                <div class="input-group"><input type="password" id="signup-pass" placeholder="كلمة المرور (6 أحرف على الأقل)"></div>
+                <div class="gender-group">
+                    <div class="gender-option selected" id="gender-male" onclick="selectGender('male')"><span>👨</span>ذكر</div>
+                    <div class="gender-option" id="gender-female" onclick="selectGender('female')"><span>👩</span>أنثى</div>
+                </div>
+                <div id="signup-error" class="error-msg"></div>
+                <div id="signup-success" class="success-msg"></div>
+                <button class="action-btn" id="signup-btn" onclick="handleSignUp()">إنشاء حساب</button>
+            </div>
+            <div id="reset-request-form" class="form-content">
+                <p class="form-title">أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين</p>
+                <div class="input-group"><input type="email" id="reset-email" placeholder="البريد الإلكتروني"></div>
+                <div id="reset-request-error" class="error-msg"></div>
+                <div id="reset-request-success" class="success-msg"></div>
+                <button class="action-btn" id="reset-request-btn" onclick="handleResetRequest()">إرسال الرابط</button>
+                <div class="extra-links" style="margin-top:15px"><a onclick="showForm('login')">← العودة لتسجيل الدخول</a></div>
+            </div>
+            <div id="reset-new-form" class="form-content">
+                <p class="form-title">أدخل كلمة المرور الجديدة</p>
+                <div class="input-group"><input type="password" id="new-pass" placeholder="كلمة المرور الجديدة"></div>
+                <div class="input-group"><input type="password" id="confirm-pass" placeholder="تأكيد كلمة المرور"></div>
+                <div id="reset-new-error" class="error-msg"></div>
+                <div id="reset-new-success" class="success-msg"></div>
+                <button class="action-btn" id="reset-new-btn" onclick="handleResetNew()">حفظ كلمة المرور الجديدة</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL='https://binqgggvhbbxetasomhv.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbnFnZ2d2aGJieGV0YXNvbWh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjQ1MzYsImV4cCI6MjA5MDkwMDUzNn0.oav0nAJDdPJRpx5qNTY7eA7xqIBi9xqCPsJuRDeloe4';
+const _supabase=supabase.createClient(SB_URL,SB_KEY);
+const avatar=document.getElementById('profile-avatar');
+const splash=document.getElementById('splashScreen'),auth=document.getElementById('authScreen');
+function showAuth(){splash.classList.add('slide-up');auth.classList.add('visible')}
+splash.addEventListener('click',showAuth);
+let touchStartY=0,mouseStartY=0;
+splash.addEventListener('touchstart',e=>{touchStartY=e.touches[0].clientY});
+splash.addEventListener('touchend',e=>{if(touchStartY-e.changedTouches[0].clientY>50)showAuth()});
+splash.addEventListener('mousedown',e=>{mouseStartY=e.clientY});
+splash.addEventListener('mouseup',e=>{if(mouseStartY-e.clientY>50)showAuth()});
+window.addEventListener('load',async()=>{
+    const{data:{session}}=await _supabase.auth.getSession();
+    if(session){window.location.href='home.html';return}
+    if(window.location.hash.includes('type=recovery')){showAuth();showForm('reset-new')}
+});
+let selectedGender='male';
+function selectGender(g){
+    selectedGender=g;
+    document.getElementById('gender-male').classList.toggle('selected',g==='male');
+    document.getElementById('gender-female').classList.toggle('selected',g==='female');
+    avatar.src=g==='female'?'avatar_female.jpg':'avatar_male.jpg';
+}
+const allForms=['login','signup','reset-request','reset-new'];
+function showForm(type){
+    allForms.forEach(f=>document.getElementById(f+'-form').classList.toggle('active',f===type));
+    document.getElementById('login-tab').className=type==='login'?'side-title active':'side-title inactive';
+    document.getElementById('signup-tab').className=type==='signup'?'side-title active':'side-title inactive';
+    avatar.src=type==='signup'?(selectedGender==='female'?'avatar_female.jpg':'avatar_male.jpg'):'avatar_device.jpg';
+    document.querySelectorAll('.error-msg, .success-msg').forEach(el=>{el.classList.remove('show');el.textContent=''});
+}
+function showMsg(id,text,type){const el=document.getElementById(id);el.textContent=text;el.className=(type==='success'?'success-msg':'error-msg')+' show'}
+async function handleSignUp(){
+    const email=document.getElementById('signup-email').value.trim();
+    const password=document.getElementById('signup-pass').value;
+    const username=document.getElementById('signup-user').value.trim();
+    const phone=document.getElementById('signup-phone').value.trim();
+    if(!username) return showMsg('signup-error','يرجى إدخال اسم المستخدم','error');
+    if(!email||!password) return showMsg('signup-error','يرجى إدخال البريد وكلمة المرور','error');
+    if(password.length<6) return showMsg('signup-error','يجب أن تكون كلمة المرور 6 أحرف على الأقل','error');
+    const btn=document.getElementById('signup-btn');btn.disabled=true;btn.textContent='جاري إنشاء الحساب...';
+    try{
+        const{data:authData,error:authError}=await _supabase.auth.signUp({email,password,options:{data:{name:username}}});
+        if(authError) throw new Error(authError.message);
+        const uid=authData.user.id;
+        await _supabase.from('users').insert([{id:uid,name:username,email,phone,password,gender:selectedGender}]);
+        const{data:pData}=await _supabase.from('persons').insert([{user_id:uid,person_name:username}]).select();
+        await _supabase.from('devices').insert([{person_id:pData[0].id,steps:0,smoke:false,heart_rate:0,oxygen:0,battery:0}]);
+        showMsg('signup-success','تم إنشاء حسابك! تحقق من بريدك لتفعيل الحساب.','success');
+        btn.textContent='تم الإرسال';
+    }catch(err){
+        showMsg('signup-error','خطأ: '+err.message,'error');
+        btn.disabled=false;btn.textContent='إنشاء حساب';
+    }
+}
+async function handleLogin(){
+    const email=document.getElementById('login-email').value.trim();
+    const password=document.getElementById('login-password').value;
+    if(!email||!password) return showMsg('login-error','يرجى إدخال البيانات','error');
+    const btn=document.getElementById('login-btn');btn.disabled=true;btn.textContent='جاري الدخول...';
+    const{error}=await _supabase.auth.signInWithPassword({email,password});
+    if(error){
+        let msg='خطأ في الدخول';
+        if(error.message.includes('Invalid login')) msg='البريد أو كلمة المرور غير صحيحة';
+        if(error.message.includes('Email not confirmed')) msg='يرجى تفعيل حسابك من البريد الإلكتروني أولاً';
+        showMsg('login-error',msg,'error');
+        btn.disabled=false;btn.textContent='دخول';
+    }else{window.location.href='home.html'}
+}
+async function handleResetRequest(){
+    const email=document.getElementById('reset-email').value.trim();
+    if(!email) return showMsg('reset-request-error','يرجى إدخال البريد الإلكتروني','error');
+    const btn=document.getElementById('reset-request-btn');btn.disabled=true;btn.textContent='جاري الإرسال...';
+    const{error}=await _supabase.auth.resetPasswordForEmail(email,{redirectTo:window.location.href.split('#')[0]});
+    if(error){showMsg('reset-request-error','خطأ: '+error.message,'error');btn.disabled=false;btn.textContent='إرسال الرابط'}
+    else{showMsg('reset-request-success','تم الإرسال! افتح بريدك واضغط على الرابط.','success');btn.textContent='تم الإرسال'}
+}
+async function handleResetNew(){
+    const newPass=document.getElementById('new-pass').value;
+    const confirmPass=document.getElementById('confirm-pass').value;
+    if(!newPass||!confirmPass) return showMsg('reset-new-error','يرجى إدخال كلمة المرور وتأكيدها','error');
+    if(newPass.length<6) return showMsg('reset-new-error','يجب أن تكون كلمة المرور 6 أحرف على الأقل','error');
+    if(newPass!==confirmPass) return showMsg('reset-new-error','كلمة المرور وتأكيدها لا يتطابقان','error');
+    const btn=document.getElementById('reset-new-btn');btn.disabled=true;btn.textContent='جاري الحفظ...';
+    const{error}=await _supabase.auth.updateUser({password:newPass});
+    if(error){showMsg('reset-new-error','خطأ: '+error.message,'error');btn.disabled=false;btn.textContent='حفظ كلمة المرور الجديدة'}
+    else{showMsg('reset-new-success','تم التغيير! جاري التحويل...','success');setTimeout(()=>window.location.href='home.html',2000)}
+}
+</script>
+</body>
+</html>

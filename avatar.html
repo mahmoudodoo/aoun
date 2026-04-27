@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>الملف الشخصي - عَوْن</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'AraHamah';src:url('ABC.ttf') format('truetype')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;min-height:100vh;color:#0a2a52}
+.top-bar{width:100%;background:#406E8F;height:70px;display:flex;justify-content:space-between;align-items:center;padding:0 24px;position:fixed;top:0;z-index:1000;box-shadow:0 2px 15px rgba(64,110,143,.3)}
+.logo-img{height:65px}
+.nav-left-group{display:flex;align-items:center;gap:12px}
+.menu-icon{font-size:24px;cursor:pointer;color:white}
+.nav-avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5);cursor:pointer;opacity:0;transition:opacity .3s}
+.dropdown{position:relative}
+.options-card{display:none;position:absolute;top:55px;left:0;width:190px;background:white;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.15);padding:8px 0;z-index:10001}
+.options-card.show{display:block}
+.options-card a{color:#333;padding:12px 16px;text-decoration:none;display:block;text-align:right;font-size:14px;border-bottom:1px solid #f5f5f5;cursor:pointer}
+.options-card a:last-child{border-bottom:none;color:#e74c3c}
+.options-card a:hover{background:#f8f9ff;color:#406E8F}
+.page{padding:94px 24px 40px;max-width:900px;margin:0 auto}
+.profile-header{background:#406E8F;border-radius:20px;padding:32px;display:flex;align-items:center;gap:28px;margin-bottom:24px;position:relative;overflow:hidden}
+.profile-header::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);top:-60px;left:-60px}
+.profile-img{width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);opacity:0;transition:opacity .3s;z-index:1}
+.profile-info{z-index:1}
+.profile-name{font-size:22px;font-weight:900;color:white;margin-bottom:4px}
+.profile-email{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:10px}
+.profile-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,.85)}
+.tag-dot{width:5px;height:5px;border-radius:50%;background:#a8ddf0}
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.stat-card{background:white;border-radius:16px;padding:20px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:3px solid #406E8F}
+.stat-label{font-size:12px;color:#aaa;margin-bottom:8px}
+.stat-value{font-size:28px;font-weight:900;color:#406E8F}
+.info-card{background:white;border-radius:20px;padding:28px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:20px}
+.info-card-title{font-size:15px;font-weight:800;color:#406E8F;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #e8f0f5}
+.info-field{margin-bottom:16px}
+.info-field:last-child{margin-bottom:0}
+.field-label{font-size:11px;font-weight:700;color:#aaa;margin-bottom:6px}
+.field-value{width:100%;padding:12px 16px;background:#f8fafc;border:1.5px solid #e8f0f5;border-radius:12px;font-size:14px;font-weight:700;color:#0a2a52;font-family:'Tajawal',sans-serif;text-align:right;outline:none}
+.btn-logout{width:100%;background:#e74c3c;color:white;border:none;padding:16px;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Tajawal',sans-serif;box-shadow:0 4px 14px rgba(231,76,60,.3)}
+.btn-logout:hover{background:#c0392b}
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+    <img src="slogan1.jpg" class="logo-img" alt="عون">
+    <div class="nav-left-group">
+        <div class="dropdown">
+            <div class="menu-icon" id="menuBtn">☰</div>
+            <div class="options-card" id="optionsCard">
+                <a href="home.html">الرئيسية</a>
+                <a href="device-status.html">حالة الجهاز</a>
+                <a href="family.html">صحة عائلتك</a>
+                <a href="avatar.html">الملف الشخصي</a>
+                <a onclick="handleLogout()">تسجيل الخروج</a>
+            </div>
+        </div>
+        <a href="avatar.html"><img src="avatar_male.jpg" class="nav-avatar" id="nav-avatar-img" alt=""></a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="profile-header">
+        <img src="avatar_male.jpg" class="profile-img" id="profile-img" alt="">
+        <div class="profile-info">
+            <div class="profile-name" id="header-name">...</div>
+            <div class="profile-email" id="header-email">...</div>
+            <div class="profile-tag"><div class="tag-dot"></div>حساب نشط</div>
+        </div>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-label">عدد الأفراد</div><div class="stat-value" id="stat-persons">...</div></div>
+        <div class="stat-card"><div class="stat-label">عدد الأجهزة</div><div class="stat-value" id="stat-devices">...</div></div>
+    </div>
+
+    <div class="info-card">
+        <div class="info-card-title">معلومات الحساب</div>
+        <div class="info-field"><div class="field-label">اسم المستخدم</div><input type="text" class="field-value" id="field-name" value="..." readonly></div>
+        <div class="info-field"><div class="field-label">البريد الإلكتروني</div><input type="email" class="field-value" id="field-email" value="..." readonly></div>
+        <div class="info-field"><div class="field-label">رقم الجوال</div><input type="text" class="field-value" id="field-phone" value="..." readonly></div>
+    </div>
+
+    <button class="btn-logout" onclick="handleLogout()">تسجيل الخروج</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL='https://binqgggvhbbxetasomhv.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbnFnZ2d2aGJieGV0YXNvbWh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjQ1MzYsImV4cCI6MjA5MDkwMDUzNn0.oav0nAJDdPJRpx5qNTY7eA7xqIBi9xqCPsJuRDeloe4';
+const _supabase=supabase.createClient(SB_URL,SB_KEY);
+
+async function init(){
+    const{data:{session}}=await _supabase.auth.getSession();
+    if(!session){window.location.href='index.html';return}
+    const{data:user}=await _supabase.from('users').select('name,email,phone,gender').eq('id',session.user.id).single();
+    if(user){
+        document.getElementById('field-name').value=user.name??'--';
+        document.getElementById('field-email').value=user.email??'--';
+        document.getElementById('field-phone').value=user.phone??'--';
+        document.getElementById('header-name').textContent=user.name??'--';
+        document.getElementById('header-email').textContent=user.email??'--';
+        const src=user.gender==='female'?'avatar_female.jpg':'avatar_male.jpg';
+        ['#nav-avatar-img','#profile-img'].forEach(sel=>{
+            const img=document.querySelector(sel);
+            if(!img)return;
+            img.src=src;
+            img.onload=()=>img.style.opacity='1';
+            if(img.complete) img.style.opacity='1';
+        });
+    }
+    const{data:persons}=await _supabase.from('persons').select('id,devices(id)').eq('user_id',session.user.id);
+    if(persons){
+        document.getElementById('stat-persons').textContent=persons.length;
+        document.getElementById('stat-devices').textContent=persons.reduce((s,p)=>s+(p.devices?.length??0),0);
+    }
+}
+async function handleLogout(){await _supabase.auth.signOut();window.location.href='index.html'}
+const menuBtn=document.getElementById('menuBtn'),optionsCard=document.getElementById('optionsCard');
+menuBtn.onclick=e=>{e.stopPropagation();optionsCard.classList.toggle('show')};
+document.onclick=()=>optionsCard.classList.remove('show');
+init();
+</script>
+</body>
+</html>

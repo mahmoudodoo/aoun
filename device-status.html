@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>عَوْن - حالة الجهاز</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'AraHamah';src:url('ABC.ttf') format('truetype')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a52}
+.top-bar{background:#406E8F;height:70px;padding:0 24px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 15px rgba(64,110,143,.3);position:fixed;top:0;left:0;right:0;z-index:10000}
+.logo-img{height:65px}
+.nav-left-group{display:flex;align-items:center;gap:12px}
+.nav-avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5);cursor:pointer;opacity:0;transition:opacity .3s}
+.menu-icon{font-size:24px;color:white;cursor:pointer}
+.dropdown{position:relative}
+.options-card{display:none;position:absolute;top:55px;left:0;width:190px;background:white;box-shadow:0 10px 30px rgba(0,0,0,.15);border-radius:14px;padding:8px 0;z-index:10001}
+.options-card.show{display:block}
+.options-card a{color:#333;padding:12px 16px;text-decoration:none;display:block;text-align:right;font-size:14px;border-bottom:1px solid #f5f5f5;cursor:pointer}
+.options-card a:last-child{border-bottom:none;color:#e74c3c}
+.options-card a:hover{background:#f8f9ff;color:#406E8F}
+
+.main-content{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:94px 24px 24px;max-width:1300px;margin:0 auto}
+
+.left-side{display:flex;flex-direction:column;gap:14px}
+
+/* Health Score Card */
+.score-card{background:white;border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.06);display:flex;align-items:center;gap:16px}
+.score-circle{width:80px;height:80px;position:relative;flex-shrink:0}
+.score-circle svg{transform:rotate(-90deg)}
+.score-circle .bg{fill:none;stroke:#f0f0f0;stroke-width:8}
+.score-circle .fg{fill:none;stroke-linecap:round;stroke-width:8;transition:stroke-dasharray 1s}
+.score-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900}
+.score-info h3{font-size:15px;color:#406E8F;font-weight:800;margin-bottom:4px}
+.score-info p{font-size:12px;color:#888}
+
+/* Metric Cards */
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metric-card{background:white;border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);display:flex;align-items:center;gap:12px;transition:.2s}
+.metric-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(64,110,143,.12)}
+.metric-icon{font-size:30px}
+.metric-info{flex:1}
+.metric-label{font-size:11px;color:#888;font-weight:700}
+.metric-value{font-size:22px;font-weight:900}
+
+/* Status Row */
+.status-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.status-card{background:white;border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.06);display:flex;justify-content:space-between;align-items:center}
+.status-label{font-size:13px;font-weight:700}
+.status-pill{padding:5px 14px;border-radius:50px;font-size:12px;font-weight:800;border:2px solid}
+.pill-green{border-color:#1D9E75;color:#1D9E75;background:#e1f5ee}
+.pill-red{border-color:#e74c3c;color:#e74c3c;background:#fdecea}
+.pill-orange{border-color:#e67e22;color:#e67e22;background:#fef3e2}
+.pill-blue{border-color:#406E8F;color:#406E8F;background:#e8f3f8}
+
+/* Map */
+.map-card{background:white;border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.map-title{font-size:14px;font-weight:800;color:#406E8F;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.map-card iframe{width:100%;height:200px;border:none;border-radius:10px}
+.no-gps{padding:30px;text-align:center;color:#aaa;background:#f8fafc;border-radius:10px;font-size:13px}
+
+.last-update{text-align:center;font-size:11px;color:#aaa;padding:8px}
+.live-pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1D9E75;margin-left:6px;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* Chat */
+.chat-side{background:white;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,.08);height:calc(100vh - 118px);min-height:500px;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.chat-bg{position:absolute;inset:0;background-image:url('Device.jpg');background-size:cover;background-position:center;opacity:.08}
+.chat-header{background:#406E8F;padding:16px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;position:relative;z-index:1}
+.chat-header-dot{width:8px;height:8px;border-radius:50%;background:#a8ddf0;animation:pulse 2s infinite}
+.chat-header-title{font-size:14px;font-weight:800;color:white}
+.chat-header-sub{font-size:11px;color:rgba(255,255,255,.7)}
+#chatBox{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
+.msg{padding:10px 14px;border-radius:14px;max-width:80%;font-size:13px;line-height:1.6}
+.user-msg{align-self:flex-start;background:#406E8F;color:white;border-bottom-right-radius:4px}
+.bot-msg{align-self:flex-end;background:white;color:#0a2a52;border:1px solid #e8f0f5;border-bottom-left-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.thinking{color:#aaa;font-style:italic}
+.chat-footer{padding:12px 16px;border-top:1px solid #e8f0f5;background:white;position:relative;z-index:1;flex-shrink:0}
+.input-wrapper{display:flex;gap:8px;align-items:center}
+.text-input{flex:1;padding:10px 16px;border:1.5px solid #e0eaf0;border-radius:50px;font-size:13px;font-family:'Tajawal',sans-serif;outline:none;background:#f8fafc}
+.text-input:focus{border-color:#406E8F;background:white}
+.send-btn{padding:10px 20px;background:#406E8F;color:white;border:none;border-radius:50px;cursor:pointer;font-size:13px;font-weight:700;font-family:'Tajawal',sans-serif}
+.send-btn:hover{background:#2e516b}
+.voice-btn{width:42px;height:42px;background:white;border:1.5px solid #e0eaf0;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0}
+.voice-btn:hover{border-color:#406E8F}
+.voice-btn.listening{border-color:#e74c3c;background:#fff5f5;animation:pulsered 1s infinite}
+@keyframes pulsered{0%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}70%{box-shadow:0 0 0 8px rgba(231,76,60,0)}100%{box-shadow:0 0 0 0 rgba(231,76,60,0)}}
+
+@media(max-width:900px){.main-content{grid-template-columns:1fr}.chat-side{height:500px}}
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+    <img src="slogan1.jpg" class="logo-img" alt="عون">
+    <div class="nav-left-group">
+        <div class="dropdown">
+            <span class="menu-icon" id="menuBtn">☰</span>
+            <div class="options-card" id="optionsCard">
+                <a href="home.html">الرئيسية</a>
+                <a href="device-status.html">حالة الجهاز</a>
+                <a href="family.html">صحة عائلتك</a>
+                <a href="avatar.html">الملف الشخصي</a>
+                <a onclick="handleLogout()">تسجيل الخروج</a>
+            </div>
+        </div>
+        <a href="avatar.html"><img src="avatar_male.jpg" class="nav-avatar" id="nav-avatar-img" alt=""></a>
+    </div>
+</header>
+
+<div class="main-content">
+    <div class="left-side">
+        <!-- Health Score -->
+        <div class="score-card">
+            <div class="score-circle">
+                <svg width="80" height="80" viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="34" class="bg"/>
+                    <circle cx="40" cy="40" r="34" class="fg" id="score-fg" stroke="#1D9E75" stroke-dasharray="0 213.6"/>
+                </svg>
+                <div class="score-text" id="score-text" style="color:#1D9E75">0</div>
+            </div>
+            <div class="score-info">
+                <h3>مؤشر الصحة العام</h3>
+                <p id="score-label">في انتظار البيانات...</p>
+            </div>
+        </div>
+
+        <!-- Sensor Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon">❤️</div>
+                <div class="metric-info">
+                    <div class="metric-label">معدل النبض</div>
+                    <div class="metric-value" id="hr-val" style="color:#e74c3c">--</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">👟</div>
+                <div class="metric-info">
+                    <div class="metric-label">الخطوات اليوم</div>
+                    <div class="metric-value" id="steps-val" style="color:#406E8F">0</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">🔋</div>
+                <div class="metric-info">
+                    <div class="metric-label">البطارية</div>
+                    <div class="metric-value" id="bat-val" style="color:#1D9E75">--</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">🩸</div>
+                <div class="metric-info">
+                    <div class="metric-label">الأكسجين</div>
+                    <div class="metric-value" id="oxy-val" style="color:#9b59b6">--</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Row -->
+        <div class="status-row">
+            <div class="status-card">
+                <div class="status-label">مستشعر الدخان</div>
+                <div class="status-pill pill-green" id="smoke-pill">آمن</div>
+            </div>
+            <div class="status-card">
+                <div class="status-label">اتصال الشبكة</div>
+                <div class="status-pill pill-green" id="net-pill">ممتاز</div>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-card">
+            <div class="map-title">📍 الموقع الحالي</div>
+            <div id="map-container">
+                <div class="no-gps">في انتظار إشارة GPS...</div>
+            </div>
+        </div>
+
+        <div class="last-update">
+            <span class="live-pulse"></span>
+            <span id="last-update">--</span>
+        </div>
+    </div>
+
+    <!-- Chat Side -->
+    <div class="chat-side">
+        <div class="chat-bg"></div>
+        <div class="chat-header">
+            <div class="chat-header-dot"></div>
+            <div>
+                <div class="chat-header-title">مساعد عَوْن الذكي</div>
+                <div class="chat-header-sub">اسألني أي سؤال صحي</div>
+            </div>
+        </div>
+        <div id="chatBox">
+            <div class="msg bot-msg">أهلاً بك في عَوْن، كيف يمكنني مساعدتك اليوم؟</div>
+        </div>
+        <div class="chat-footer">
+            <div class="input-wrapper">
+                <input type="text" class="text-input" id="textInput" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') sendText()">
+                <button class="send-btn" onclick="sendText()">إرسال</button>
+                <div class="voice-btn" id="voiceBtn">🎤</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL='https://binqgggvhbbxetasomhv.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbnFnZ2d2aGJieGV0YXNvbWh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjQ1MzYsImV4cCI6MjA5MDkwMDUzNn0.oav0nAJDdPJRpx5qNTY7eA7xqIBi9xqCPsJuRDeloe4';
+const OA_KEY='REPLACE_WITH_OPENAI_KEY'; // ⚠️ Set in production via secure means
+const _supabase=supabase.createClient(SB_URL,SB_KEY);
+const chatBox=document.getElementById('chatBox'),textInput=document.getElementById('textInput'),voiceBtn=document.getElementById('voiceBtn');
+const chatHistory=[{role:'system',content:'أنت مساعد صحي ذكي اسمه عون. أجب باللغة العربية بشكل مختصر ومفيد.'}];
+
+const CIRCLE_LEN=213.6; // 2*pi*34
+
+function calcHealthScore(d){
+    let s=0;
+    if(d.heart_rate){const h=d.heart_rate;if(h>=60&&h<=100)s+=40;else if(h>=50&&h<=110)s+=30;else if(h>=40&&h<=130)s+=20;else s+=10}
+    if(d.steps)s+=Math.min((d.steps/10000)*30,30);
+    if(d.battery)s+=Math.min((d.battery/100)*20,20);
+    if(d.oxygen&&d.oxygen>=95)s+=5;
+    if(d.latitude)s+=5;
+    return Math.round(Math.max(0,Math.min(100,s)));
+}
+
+function timeAgo(t){
+    if(!t) return'لا توجد بيانات';
+    const diff=Math.floor((Date.now()-new Date(t).getTime())/1000);
+    if(diff<60) return'تحديث الآن';
+    if(diff<3600) return`آخر تحديث قبل ${Math.floor(diff/60)} دقيقة`;
+    if(diff<86400) return`آخر تحديث قبل ${Math.floor(diff/3600)} ساعة`;
+    return`آخر تحديث قبل ${Math.floor(diff/86400)} يوم`;
+}
+
+async function init(){
+    const{data:{session}}=await _supabase.auth.getSession();
+    if(!session){window.location.href='index.html';return}
+    await loadAvatar(session.user.id);
+    loadDeviceData(session.user.id);
+    setInterval(()=>loadDeviceData(session.user.id),15000);
+}
+
+async function loadAvatar(uid){
+    const{data}=await _supabase.from('users').select('gender').eq('id',uid).single();
+    const src=data?.gender==='female'?'avatar_female.jpg':'avatar_male.jpg';
+    document.querySelectorAll('.nav-avatar').forEach(img=>{img.src=src;img.onload=()=>img.style.opacity='1';if(img.complete)img.style.opacity='1'})
+}
+
+async function loadDeviceData(uid){
+    const{data,error}=await _supabase.from('persons').select('id,devices(*)').eq('user_id',uid).limit(1);
+    if(error||!data||!data.length||!data[0].devices?.length) return;
+    const d=data[0].devices[0];
+
+    // Heart rate
+    document.getElementById('hr-val').textContent=d.heart_rate||'--';
+    
+    // Steps
+    document.getElementById('steps-val').textContent=(d.steps||0).toLocaleString();
+    
+    // Battery
+    const batEl=document.getElementById('bat-val');
+    batEl.textContent=d.battery!=null?d.battery+'%':'--';
+    batEl.style.color=d.battery>50?'#1D9E75':d.battery>20?'#e67e22':'#e74c3c';
+    
+    // Oxygen
+    document.getElementById('oxy-val').textContent=d.oxygen!=null&&d.oxygen>0?d.oxygen+'%':'--';
+    
+    // Smoke
+    const smokeEl=document.getElementById('smoke-pill');
+    smokeEl.textContent=d.smoke?'تحذير':'آمن';
+    smokeEl.className='status-pill '+(d.smoke?'pill-red':'pill-green');
+    
+    // Network
+    const netEl=document.getElementById('net-pill');
+    netEl.textContent=d.network_status||'ممتاز';
+    netEl.className='status-pill pill-green';
+    
+    // Map
+    const mapEl=document.getElementById('map-container');
+    if(d.latitude&&d.longitude){
+        mapEl.innerHTML=`<iframe src="https://www.google.com/maps?q=${d.latitude},${d.longitude}&z=15&output=embed"></iframe>`;
+    }else{
+        mapEl.innerHTML='<div class="no-gps">في انتظار إشارة GPS...</div>';
+    }
+    
+    // Health Score
+    const score=calcHealthScore(d);
+    const scoreColor=score>=80?'#1D9E75':score>=50?'#e67e22':'#e74c3c';
+    const scoreLabel=score>=80?'ممتاز':score>=50?'جيد':'يحتاج تحسين';
+    document.getElementById('score-text').textContent=score;
+    document.getElementById('score-text').style.color=scoreColor;
+    const fg=document.getElementById('score-fg');
+    fg.style.stroke=scoreColor;
+    fg.setAttribute('stroke-dasharray',`${(score/100)*CIRCLE_LEN} ${CIRCLE_LEN}`);
+    document.getElementById('score-label').textContent=scoreLabel;
+    
+    // Last update
+    document.getElementById('last-update').textContent=timeAgo(d.updated_at);
+}
+
+function sendText(){
+    const t=textInput.value.trim();
+    if(!t) return;
+    textInput.value='';
+    addMessage(t,'user-msg');
+    askChatGPT(t);
+}
+
+function addMessage(text,cls){
+    const m=document.createElement('div');
+    m.className='msg '+cls;m.textContent=text;
+    chatBox.appendChild(m);chatBox.scrollTop=chatBox.scrollHeight;
+    return m;
+}
+
+async function askChatGPT(userText){
+    const thinking=addMessage('...','bot-msg thinking');
+    if(OA_KEY==='REPLACE_WITH_OPENAI_KEY'){
+        thinking.textContent='يرجى تعيين مفتاح OpenAI لتفعيل المحادثة الذكية.';
+        thinking.classList.remove('thinking');
+        return;
+    }
+    chatHistory.push({role:'user',content:userText});
+    try{
+        const res=await fetch('https://api.openai.com/v1/chat/completions',{
+            method:'POST',
+            headers:{'Content-Type':'application/json','Authorization':'Bearer '+OA_KEY},
+            body:JSON.stringify({model:'gpt-4o-mini',messages:chatHistory,max_tokens:400})
+        });
+        const data=await res.json();
+        const reply=data.choices?.[0]?.message?.content??'عذراً، حدث خطأ.';
+        chatHistory.push({role:'assistant',content:reply});
+        thinking.textContent=reply;
+        thinking.classList.remove('thinking');
+        speakText(reply);
+    }catch{thinking.textContent='خطأ في الاتصال.';thinking.classList.remove('thinking')}
+}
+
+function speakText(text){
+    if(!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='ar-SA';u.rate=1;u.pitch=1;
+    window.speechSynthesis.speak(u);
+}
+
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(SR){
+    const rec=new SR();
+    rec.lang='ar-SA';rec.interimResults=false;rec.continuous=false;
+    voiceBtn.onclick=()=>{rec.start();voiceBtn.classList.add('listening')};
+    rec.onresult=e=>{const t=e.results[0][0].transcript;voiceBtn.classList.remove('listening');addMessage(t,'user-msg');askChatGPT(t)};
+    rec.onerror=rec.onend=()=>voiceBtn.classList.remove('listening');
+}else{voiceBtn.onclick=()=>alert('استخدم Chrome للتعرف على الصوت')}
+
+async function handleLogout(){await _supabase.auth.signOut();window.location.href='index.html'}
+const menuBtn=document.getElementById('menuBtn'),optionsCard=document.getElementById('optionsCard');
+menuBtn.onclick=e=>{e.stopPropagation();optionsCard.classList.toggle('show')};
+document.onclick=()=>optionsCard.classList.remove('show');
+init();
+</script>
+</body>
+</html>
