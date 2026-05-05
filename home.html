@@ -88,6 +88,7 @@ body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a5
                 <a href="device-status.html">حالة الجهاز</a>
                 <a href="family.html">صحة عائلتك</a>
                 <a href="avatar.html">الملف الشخصي</a>
+                <a href="notifications.html">🔔 الإشعارات</a>
                 <a onclick="handleLogout()">تسجيل الخروج</a>
             </div>
         </div>
@@ -156,6 +157,7 @@ body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a5
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 const SB_URL='https://binqgggvhbbxetasomhv.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbnFnZ2d2aGJieGV0YXNvbWh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjQ1MzYsImV4cCI6MjA5MDkwMDUzNn0.oav0nAJDdPJRpx5qNTY7eA7xqIBi9xqCPsJuRDeloe4';
@@ -210,5 +212,6 @@ menuBtn.onclick=e=>{e.stopPropagation();optionsCard.classList.toggle('show')};
 document.onclick=()=>optionsCard.classList.remove('show');
 init();
 </script>
+<script src="notifications.js"></script>
 </body>
 </html>

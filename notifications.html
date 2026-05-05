@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>عَوْن - الإشعارات</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'AraHamah';src:url('ABC.ttf') format('truetype')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a52}
+.top-bar{background:#406E8F;height:70px;padding:0 24px;display:flex;justify-content:space-between;align-items:center;position:fixed;top:0;left:0;right:0;z-index:10000;box-shadow:0 2px 15px rgba(64,110,143,.3)}
+.logo-img{height:65px}
+.nav-left-group{display:flex;align-items:center;gap:12px}
+.nav-avatar{width:45px;height:45px;border-radius:50%;border:2px solid rgba(255,255,255,.5);object-fit:cover;cursor:pointer;opacity:0;transition:opacity .3s}
+.menu-icon{font-size:24px;color:white;cursor:pointer}
+.dropdown{position:relative}
+.options-card{display:none;position:absolute;top:55px;left:0;width:190px;background:white;box-shadow:0 10px 30px rgba(0,0,0,.15);border-radius:14px;padding:8px 0;z-index:10001}
+.options-card.show{display:block}
+.options-card a{color:#333;padding:12px 16px;text-decoration:none;display:block;text-align:right;font-size:14px;border-bottom:1px solid #f5f5f5;cursor:pointer}
+.options-card a:last-child{border-bottom:none;color:#e74c3c}
+.options-card a:hover{background:#f8f9ff;color:#406E8F}
+
+.page{padding:94px 24px 40px;max-width:800px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.header h1{font-size:22px;font-weight:900;color:#406E8F}
+.header-actions{display:flex;gap:8px}
+.btn{padding:8px 14px;border:none;border-radius:50px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Tajawal',sans-serif;transition:.2s}
+.btn-primary{background:#406E8F;color:white}
+.btn-primary:hover{background:#2e516b}
+.btn-danger{background:#fdecea;color:#e74c3c;border:1px solid #f5c6c6}
+.btn-danger:hover{background:#e74c3c;color:white}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+.notif-card{background:white;border-radius:14px;padding:14px;margin-bottom:10px;display:flex;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-right:4px solid transparent;transition:.2s;cursor:pointer}
+.notif-card:hover{transform:translateX(-2px)}
+.notif-card.unread{background:#f0f8ff;border-right-color:#406E8F}
+.notif-card.unread.danger{border-right-color:#e74c3c;background:#fff5f5}
+.notif-card.unread.warning{border-right-color:#e67e22;background:#fffaf0}
+.notif-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.notif-icon.info{background:#e8f3f8;color:#406E8F}
+.notif-icon.danger{background:#fdecea;color:#e74c3c}
+.notif-icon.warning{background:#fef3e2;color:#e67e22}
+.notif-content{flex:1}
+.notif-title{font-size:14px;font-weight:800;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.unread-dot{width:8px;height:8px;border-radius:50%;background:#e74c3c;flex-shrink:0}
+.notif-body{font-size:13px;color:#444;line-height:1.5;margin-bottom:6px}
+.notif-time{font-size:11px;color:#999}
+.notif-actions{display:flex;gap:6px;margin-top:8px}
+.del-btn{background:#fdecea;color:#e74c3c;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:'Tajawal',sans-serif}
+
+.empty{text-align:center;padding:80px 20px;color:#bbb}
+.empty-icon{font-size:60px;margin-bottom:16px;opacity:.5}
+.loading{text-align:center;padding:60px;color:#406E8F}
+
+.notif-bell{position:relative;cursor:pointer}
+.notif-bell-icon{font-size:22px;color:white;text-decoration:none}
+.notif-bell-badge{position:absolute;top:-6px;right:-8px;background:#e74c3c;color:white;font-size:9px;padding:2px 5px;border-radius:10px;font-weight:bold;min-width:16px;text-align:center;display:none}
+.notif-bell-badge.show{display:inline-block}
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+    <img src="slogan1.jpg" class="logo-img" alt="عون">
+    <div class="nav-left-group">
+        <div class="dropdown">
+            <span class="menu-icon" id="menuBtn">☰</span>
+            <div class="options-card" id="optionsCard">
+                <a href="home.html">الرئيسية</a>
+                <a href="device-status.html">حالة الجهاز</a>
+                <a href="family.html">صحة عائلتك</a>
+                <a href="notifications.html">الإشعارات</a>
+                <a href="avatar.html">الملف الشخصي</a>
+                <a onclick="handleLogout()">تسجيل الخروج</a>
+            </div>
+        </div>
+        <a href="avatar.html"><img src="avatar_male.jpg" class="nav-avatar" id="nav-avatar-img" alt=""></a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="header">
+        <h1>الإشعارات</h1>
+        <div class="header-actions">
+            <button class="btn btn-primary" onclick="markAllRead()" id="mark-all-btn">قراءة الكل</button>
+            <button class="btn btn-danger" onclick="clearAll()" id="clear-btn">حذف الكل</button>
+        </div>
+    </div>
+    <div id="list"><div class="loading">جاري التحميل...</div></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="notifications.js"></script>
+<script>
+const SB_URL='https://binqgggvhbbxetasomhv.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbnFnZ2d2aGJieGV0YXNvbWh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjQ1MzYsImV4cCI6MjA5MDkwMDUzNn0.oav0nAJDdPJRpx5qNTY7eA7xqIBi9xqCPsJuRDeloe4';
+const _supabase=supabase.createClient(SB_URL,SB_KEY);
+let currentUser=null;
+
+const ICONS={low_heart_rate:'❤️',high_heart_rate:'❤️',low_battery:'🔋',smoke:'🚨',low_oxygen:'🫁',achievement:'🏆',medication:'💊',fall:'⚠️',general:'🔔'};
+
+function timeAgo(t){
+    const d=Math.floor((Date.now()-new Date(t).getTime())/1000);
+    if(d<60) return'الآن';
+    if(d<3600) return`قبل ${Math.floor(d/60)} دقيقة`;
+    if(d<86400) return`قبل ${Math.floor(d/3600)} ساعة`;
+    if(d<604800) return`قبل ${Math.floor(d/86400)} يوم`;
+    return new Date(t).toLocaleDateString('ar-SA');
+}
+
+async function init(){
+    const{data:{session}}=await _supabase.auth.getSession();
+    if(!session){window.location.href='index.html';return}
+    currentUser=session.user;
+    loadAvatar(currentUser.id);
+    loadNotifications();
+}
+
+async function loadAvatar(uid){
+    const{data}=await _supabase.from('users').select('gender').eq('id',uid).single();
+    const src=data?.gender==='female'?'avatar_female.jpg':'avatar_male.jpg';
+    document.querySelectorAll('.nav-avatar').forEach(img=>{img.src=src;img.onload=()=>img.style.opacity='1';if(img.complete)img.style.opacity='1'})
+}
+
+async function loadNotifications(){
+    const list=document.getElementById('list');
+    const{data,error}=await _supabase.from('notifications').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false}).limit(100);
+    if(error){list.innerHTML='<div class="empty">خطأ في التحميل</div>';return}
+    if(!data||!data.length){
+        list.innerHTML='<div class="empty"><div class="empty-icon">🔕</div><div>لا توجد إشعارات</div></div>';
+        return;
+    }
+    list.innerHTML=data.map(n=>{
+        const icon=ICONS[n.type]||'🔔';
+        const sev=n.severity||'info';
+        const cardClasses=`notif-card ${n.is_read?'':'unread'} ${sev}`;
+        return `
+            <div class="${cardClasses}" onclick="markRead('${n.id}')">
+                <div class="notif-icon ${sev}">${icon}</div>
+                <div class="notif-content">
+                    <div class="notif-title">
+                        <span>${n.title}</span>
+                        ${n.is_read?'':'<div class="unread-dot"></div>'}
+                    </div>
+                    <div class="notif-body">${n.body}</div>
+                    <div class="notif-time">${timeAgo(n.created_at)}</div>
+                    <div class="notif-actions">
+                        <button class="del-btn" onclick="event.stopPropagation();deleteNotif('${n.id}')">🗑️ حذف</button>
+                    </div>
+                </div>
+            </div>`;
+    }).join('');
+}
+
+async function markRead(id){
+    await _supabase.from('notifications').update({is_read:true}).eq('id',id);
+    loadNotifications();
+    if(window.refreshNotifBadge) window.refreshNotifBadge();
+}
+
+async function markAllRead(){
+    await _supabase.from('notifications').update({is_read:true}).eq('user_id',currentUser.id).eq('is_read',false);
+    loadNotifications();
+    if(window.refreshNotifBadge) window.refreshNotifBadge();
+}
+
+async function deleteNotif(id){
+    if(!confirm('حذف الإشعار؟')) return;
+    await _supabase.from('notifications').delete().eq('id',id);
+    loadNotifications();
+    if(window.refreshNotifBadge) window.refreshNotifBadge();
+}
+
+async function clearAll(){
+    if(!confirm('حذف جميع الإشعارات؟')) return;
+    await _supabase.from('notifications').delete().eq('user_id',currentUser.id);
+    loadNotifications();
+    if(window.refreshNotifBadge) window.refreshNotifBadge();
+}
+
+async function handleLogout(){await _supabase.auth.signOut();window.location.href='index.html'}
+const menuBtn=document.getElementById('menuBtn'),optionsCard=document.getElementById('optionsCard');
+menuBtn.onclick=e=>{e.stopPropagation();optionsCard.classList.toggle('show')};
+document.onclick=()=>optionsCard.classList.remove('show');
+init();
+</script>
+</body>
+</html>
