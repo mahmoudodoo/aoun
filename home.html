@@ -1,79 +1,123 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>عَوْن - الرئيسية</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet">
-<style>
-@font-face{font-family:'AraHamah';src:url('ABC.ttf') format('truetype')}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a52}
-.top-bar{display:flex;justify-content:space-between;align-items:center;padding:0 20px;height:70px;background:#406E8F;position:fixed;top:0;left:0;right:0;z-index:10000;box-shadow:0 2px 15px rgba(64,110,143,.3)}
-.logo-img{height:65px}
-.nav-left-group{display:flex;align-items:center;gap:12px}
-.nav-avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5);cursor:pointer;opacity:0;transition:opacity .3s}
-.menu-icon{font-size:24px;color:white;cursor:pointer}
-.dropdown{position:relative}
-.options-card{display:none;position:absolute;top:55px;left:0;width:190px;background:white;box-shadow:0 10px 30px rgba(0,0,0,.15);border-radius:14px;padding:8px 0;z-index:10001}
-.options-card.show{display:block;animation:fadeDown .2s ease}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-.options-card a{color:#333;padding:12px 16px;text-decoration:none;display:block;text-align:right;font-size:14px;border-bottom:1px solid #f5f5f5;transition:.2s;cursor:pointer}
-.options-card a:last-child{border-bottom:none;color:#e74c3c}
-.options-card a:hover{background:#f8f9ff;color:#406E8F}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عَوْن - الرئيسية</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'AraHamah'; src: url('ABC.ttf') format('truetype'); }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a52}
 
-.main{padding-top:70px}
-.hero{position:relative;height:380px;overflow:hidden}
-.hero img{width:100%;height:100%;object-fit:cover;filter:brightness(.75)}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(to left,rgba(10,42,82,.75) 0%,rgba(10,42,82,.35) 50%,transparent 100%)}
-.hero-content{position:absolute;top:50%;right:50px;transform:translateY(-50%);color:white;max-width:380px}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:4px 12px;font-size:11px;margin-bottom:14px}
-.badge-dot{width:5px;height:5px;border-radius:50%;background:#a8ddf0;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.hero-title{font-size:36px;font-weight:900;line-height:1.15;margin-bottom:10px}
-.hero-title em{font-style:normal;color:#a8ddf0}
-.hero-desc{font-size:13px;opacity:.85;line-height:1.8;font-weight:300}
+        .top-bar{display:flex;justify-content:space-between;align-items:center;padding:0 20px;height:70px;background:#406E8F;position:fixed;top:0;left:0;right:0;z-index:10000;box-shadow:0 2px 15px rgba(64,110,143,.3)}
+        .logo-img{height:65px}
+        .nav-left-group{display:flex;align-items:center;gap:12px}
+        .nav-avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5);cursor:pointer;opacity:0;transition:opacity .3s}
+        .menu-icon{font-size:24px;color:white;cursor:pointer}
+        .dropdown{position:relative}
+        .options-card{display:none;position:absolute;top:55px;left:0;width:190px;background:white;box-shadow:0 10px 30px rgba(0,0,0,.15);border-radius:14px;padding:8px 0;z-index:10001}
+        .options-card.show{display:block;animation:fadeDown .2s ease}
+        @keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+        .options-card a{color:#333;padding:12px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;font-size:14px;border-bottom:1px solid #f5f5f5;transition:.2s;cursor:pointer}
+        .options-card a:last-child{border-bottom:none;color:#e74c3c}
+        .options-card a:hover{background:#f8f9ff;color:#406E8F;padding-right:20px}
 
-.live-summary{margin:24px 24px 0;background:white;border-radius:18px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
-.live-summary-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.live-summary-header h3{font-size:16px;font-weight:800;color:#406E8F;display:flex;align-items:center;gap:8px}
-.live-dot{width:8px;height:8px;border-radius:50%;background:#1D9E75;animation:pulse 1.5s infinite}
-.live-summary-time{font-size:11px;color:#999}
-.live-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-.live-item{text-align:center;padding:14px 6px;background:#f8fafc;border-radius:12px;border:1px solid #e8f0f5}
-.live-icon{font-size:22px;margin-bottom:6px}
-.live-value{font-size:18px;font-weight:900;color:#0a2a52}
-.live-unit{font-size:10px;color:#999;margin-top:2px}
-.health-score-bar{margin-top:16px;height:8px;border-radius:4px;background:#f0f0f0;overflow:hidden}
-.health-score-fill{height:100%;background:linear-gradient(to left,#1D9E75,#406E8F);border-radius:4px;transition:width 1s}
+        .main{padding-top:70px}
 
-.quick-access{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:24px}
-.quick-card{border-radius:18px;text-decoration:none;display:block;position:relative;overflow:hidden;height:160px;transition:.3s;box-shadow:0 6px 20px rgba(64,110,143,.2)}
-.quick-card:nth-child(1){background:linear-gradient(135deg,#1a4a6e,#406E8F,#5a8fad)}
-.quick-card:nth-child(2){background:linear-gradient(135deg,#0d3352,#2e6080,#406E8F)}
-.quick-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(64,110,143,.35)}
-.qc-content{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;justify-content:flex-end}
-.qc-line{width:26px;height:2.5px;background:rgba(255,255,255,.7);border-radius:2px;margin-bottom:8px}
-.qc-title{font-size:17px;font-weight:900;color:white;margin-bottom:4px}
-.qc-desc{font-size:10px;color:rgba(255,255,255,.8);font-weight:300}
+        /* الهيرو */
+        .hero{position:relative;height:420px;overflow:hidden}
+        .hero img{width:100%;height:100%;object-fit:cover;filter:brightness(.75)}
+        .hero-overlay{position:absolute;inset:0;background:linear-gradient(to left,rgba(10,42,82,.75) 0%,rgba(10,42,82,.35) 50%,transparent 100%)}
+        .hero-content{position:absolute;top:50%;right:50px;transform:translateY(-50%);color:white;max-width:380px}
+        .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:4px 12px;font-size:11px;margin-bottom:14px}
+        .badge-dot{width:5px;height:5px;border-radius:50%;background:#a8ddf0;animation:pulse 2s infinite}
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+        .hero-title{font-size:36px;font-weight:900;line-height:1.15;margin-bottom:10px}
+        .hero-title em{font-style:normal;color:#a8ddf0}
+        .hero-desc{font-size:13px;opacity:.85;line-height:1.8;font-weight:300}
 
-.products{padding:0 24px 36px}
-.products h2{font-size:17px;font-weight:800;color:#406E8F;margin-bottom:16px}
-.prod-grid{display:flex;justify-content:center;gap:16px}
-.prod-card{width:200px;height:200px;border-radius:20px;overflow:hidden;position:relative;flex-shrink:0;box-shadow:0 6px 24px rgba(0,0,0,.15);cursor:pointer;transition:.25s;border:3px solid white}
-.prod-card:hover{transform:scale(1.05);box-shadow:0 12px 30px rgba(64,110,143,.25)}
-.prod-card img{width:100%;height:100%;object-fit:cover}
-.prod-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(30,50,80,.82));padding:10px 10px 12px}
-.prod-name{font-size:13px;font-weight:700;color:white;text-align:center}
+        /* الحالة الحالية (LIVE SUMMARY) */
+        .live-summary{margin:24px 24px 0;background:white;border-radius:18px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+        .live-summary-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+        .live-summary-header h3{font-size:16px;font-weight:800;color:#406E8F;display:flex;align-items:center;gap:8px}
+        .live-dot{width:8px;height:8px;border-radius:50%;background:#1D9E75;animation:pulse 1.5s infinite}
+        .live-summary-time{font-size:11px;color:#999}
+        .live-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+        .live-item{text-align:center;padding:14px 6px;background:#f8fafc;border-radius:12px;border:1px solid #e8f0f5;transition:.2s}
+        .live-item:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(64,110,143,.1)}
+        .live-icon{font-size:22px;margin-bottom:6px}
+        .live-value{font-size:18px;font-weight:900;color:#0a2a52}
+        .live-unit{font-size:10px;color:#999;margin-top:2px}
+        .health-score-bar{margin-top:16px;height:8px;border-radius:4px;background:#f0f0f0;overflow:hidden}
+        .health-score-fill{height:100%;background:linear-gradient(to left,#1D9E75,#406E8F);border-radius:4px;transition:width 1s}
 
-.footer-wrap{background:#406E8F}
-.footer-about{padding:28px 24px 22px;border-bottom:1px solid rgba(255,255,255,.12)}
-.footer-about-h{font-size:15px;font-weight:800;color:white;margin-bottom:10px}
-.footer-about-p{font-size:12px;color:rgba(255,255,255,.75);font-weight:300;line-height:1.9}
-.footer-bottom{padding:20px 24px;text-align:center;color:rgba(255,255,255,.8);font-size:13px}
+        /* البطاقتان */
+        .quick-access{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:24px}
+        .quick-card{border-radius:18px;text-decoration:none;display:block;position:relative;overflow:hidden;height:180px;transition:.3s;box-shadow:0 6px 20px rgba(64,110,143,.2)}
+        .quick-card:nth-child(1){background:linear-gradient(135deg,#1a4a6e,#406E8F,#5a8fad)}
+        .quick-card:nth-child(2){background:linear-gradient(135deg,#0d3352,#2e6080,#406E8F)}
+        .quick-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(64,110,143,.35)}
+        .qc-deco{position:absolute;inset:0;overflow:hidden}
+        .qc-deco::before{content:'';position:absolute;width:150px;height:150px;border-radius:50%;border:25px solid rgba(255,255,255,.07);top:-40px;left:-40px}
+        .qc-deco::after{content:'';position:absolute;width:100px;height:100px;border-radius:50%;border:18px solid rgba(255,255,255,.05);bottom:-20px;right:-20px}
+        .qc-content{position:absolute;inset:0;padding:18px 16px;display:flex;flex-direction:column;justify-content:flex-end;z-index:1}
+        .qc-line{width:26px;height:2.5px;background:rgba(255,255,255,.7);border-radius:2px;margin-bottom:8px}
+        .qc-title{font-size:17px;font-weight:900;color:white;margin-bottom:4px}
+        .qc-desc{font-size:10px;color:rgba(255,255,255,.8);font-weight:300;line-height:1.5}
 
-@media(max-width:700px){.live-grid{grid-template-columns:repeat(3,1fr)}.hero-title{font-size:28px}.quick-access{grid-template-columns:1fr}}
-</style>
+        /* المنتجات */
+        .products{padding:0 24px 36px}
+        .products h2{font-size:17px;font-weight:800;color:#406E8F;margin-bottom:16px}
+        .prod-grid{display:flex;justify-content:center;gap:16px}
+        .prod-card{width:200px;height:200px;border-radius:20px;overflow:hidden;position:relative;flex-shrink:0;box-shadow:0 6px 24px rgba(0,0,0,.15);cursor:pointer;transition:.25s;border:3px solid white}
+        .prod-card:hover{transform:scale(1.05);box-shadow:0 12px 30px rgba(64,110,143,.25)}
+        .prod-card img{width:100%;height:100%;object-fit:cover}
+        .prod-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(30,50,80,.82));padding:10px 10px 12px}
+        .prod-name{font-size:13px;font-weight:700;color:white;text-align:center}
+
+        /* الصناعة السعودية */
+        .saudi-section{margin:0 24px 36px;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;min-height:160px}
+        .saudi-right{background:#1e3a5f;flex:0 0 42%;padding:20px 18px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+        .saudi-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:50px;padding:3px 10px;font-size:9px;color:rgba(255,255,255,.85);letter-spacing:1.5px;display:inline-block;width:fit-content}
+        .saudi-main-title{font-size:16px;font-weight:900;color:white;line-height:1.4}
+        .saudi-sa-label{font-size:12px;font-weight:700;color:rgba(255,255,255,.6)}
+        .saudi-left{background:white;flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:8px;justify-content:center}
+        .saudi-card-item{background:#f4f8fb;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px}
+        .saudi-card-icon{font-size:18px;flex-shrink:0;width:30px;text-align:center}
+        .saudi-card-tt{font-size:12px;font-weight:800;color:#0a2a52;margin-bottom:1px}
+        .saudi-card-st{font-size:10px;color:#999;font-weight:300}
+
+        /* الفوتر */
+        .footer-wrap{background:#406E8F}
+        .footer-about{padding:28px 24px 22px;border-bottom:1px solid rgba(255,255,255,.12)}
+        .footer-about-tag{font-size:9px;color:rgba(255,255,255,.55);letter-spacing:2px;margin-bottom:8px}
+        .footer-about-h{font-size:15px;font-weight:800;color:white;margin-bottom:10px}
+        .footer-about-p{font-size:12px;color:rgba(255,255,255,.75);font-weight:300;line-height:1.9}
+        .feat-section{padding:22px 24px 0}
+        .feat-label{font-size:12px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:12px;letter-spacing:.5px}
+        .feat-tabs{display:flex;gap:5px;flex-wrap:wrap}
+        .feat-tab{flex:1;min-width:80px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px 8px 0 0;padding:9px 6px;text-align:center;cursor:pointer;transition:.2s}
+        .feat-tab:hover{background:rgba(255,255,255,.18)}
+        .feat-tab.active{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.35)}
+        .feat-tab-tt{font-size:10px;font-weight:700;color:white}
+        .feat-panel{background:rgba(255,255,255,.08);border-radius:0 0 10px 10px;padding:14px 16px;border-top:2px solid rgba(255,255,255,.3);display:none;margin-bottom:18px}
+        .feat-panel.show{display:block;animation:fadePanel .2s ease}
+        @keyframes fadePanel{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+        .fp-tt{font-size:13px;font-weight:800;color:white;margin-bottom:5px}
+        .fp-ds{font-size:11px;color:rgba(255,255,255,.75);line-height:1.7;font-weight:300}
+        .footer-divider{height:1px;background:rgba(255,255,255,.15);margin:0 24px}
+        .footer-bottom{padding:20px 24px;text-align:center;color:rgba(255,255,255,.8);font-size:13px;font-weight:500}
+
+        @media(max-width:700px){
+            .live-grid{grid-template-columns:repeat(3,1fr)}
+            .hero-title{font-size:28px}
+            .quick-access{grid-template-columns:1fr}
+            .saudi-section{flex-direction:column}
+            .saudi-right{flex:none}
+        }
+    </style>
 </head>
 <body>
 
@@ -88,24 +132,29 @@ body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a5
                 <a href="family.html">صحة عائلتك</a>
                 <a href="avatar.html">الملف الشخصي</a>
                 <a href="notifications.html">🔔 الإشعارات</a>
-                <a onclick="handleLogout()">تسجيل الخروج</a>
+                <a href="#" onclick="handleLogout()">تسجيل الخروج</a>
             </div>
         </div>
-        <a href="avatar.html"><img src="avatar_male.jpg" class="nav-avatar" id="nav-avatar-img" alt=""></a>
+        <a href="avatar.html">
+            <img src="avatar_male.jpg" class="nav-avatar" id="nav-avatar-img" alt="الملف الشخصي">
+        </a>
     </div>
 </header>
 
 <div class="main">
+
+    <!-- الهيرو -->
     <div class="hero">
         <img src="hero.jpg" alt="عون">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-badge"><div class="badge-dot"></div>نظام مراقبة صحي ذكي</div>
             <h1 class="hero-title">عَـــون<br><em>رفيقك الصحي</em></h1>
-            <p class="hero-desc">عَوْن يراقب صحة عائلتك على مدار الساعة</p>
+            <p class="hero-desc">عَوْن يراقب صحة عائلتك على مدار الساعة وينبهك في الوقت المناسب</p>
         </div>
     </div>
 
+    <!-- الحالة الحالية (LIVE SUMMARY) -->
     <div class="live-summary">
         <div class="live-summary-header">
             <h3><span class="live-dot"></span>الحالة الحالية</h3>
@@ -121,15 +170,18 @@ body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a5
         <div class="health-score-bar"><div class="health-score-fill" id="score-bar" style="width:0%"></div></div>
     </div>
 
+    <!-- البطاقتان السريعتان -->
     <div class="quick-access">
         <a href="device-status.html" class="quick-card">
+            <div class="qc-deco"></div>
             <div class="qc-content">
                 <div class="qc-line"></div>
                 <div class="qc-title">حالة الجهاز</div>
-                <div class="qc-desc">راقب الجهاز والبطارية وتحدث مع المساعد الذكي</div>
+                <div class="qc-desc">راقب المؤشرات الحيوية وتحدث مع المساعد الذكي</div>
             </div>
         </a>
         <a href="family.html" class="quick-card">
+            <div class="qc-deco"></div>
             <div class="qc-content">
                 <div class="qc-line"></div>
                 <div class="qc-title">صحة عائلتك</div>
@@ -138,82 +190,164 @@ body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a5
         </a>
     </div>
 
+    <!-- المنتجات -->
     <div class="products">
         <h2>منتجات عَوْن</h2>
         <div class="prod-grid">
-            <div class="prod-card"><img src="a1.jpg" alt=""><div class="prod-overlay"><div class="prod-name">ساعة عَوْن</div></div></div>
-            <div class="prod-card"><img src="a2.jpg" alt=""><div class="prod-overlay"><div class="prod-name">جهاز عَوْن</div></div></div>
+            <div class="prod-card">
+                <img src="a1.jpg" alt="ساعة عون">
+                <div class="prod-overlay"><div class="prod-name">ساعة عَوْن</div></div>
+            </div>
+            <div class="prod-card">
+                <img src="a2.jpg" alt="تطبيق عون">
+                <div class="prod-overlay"><div class="prod-name">تطبيق عَوْن</div></div>
+            </div>
         </div>
     </div>
 
+    <!-- صناعة سعودية -->
+    <div class="saudi-section">
+        <div class="saudi-right">
+            <div class="saudi-badge">SAUDI INNOVATION</div>
+            <div class="saudi-main-title">صُنع بفخر في المملكة</div>
+            <div class="saudi-sa-label">فريق سعودي يؤمن بمستقبل الرعاية الصحية الذكية</div>
+        </div>
+        <div class="saudi-left">
+            <div class="saudi-card-item">
+                <div class="saudi-card-icon">🎓</div>
+                <div><div class="saudi-card-tt">مشروع تخرج</div><div class="saudi-card-st">طلاب سعوديون طموحون</div></div>
+            </div>
+            <div class="saudi-card-item">
+                <div class="saudi-card-icon">💡</div>
+                <div><div class="saudi-card-tt">ابتكار محلي</div><div class="saudi-card-st">تقنية بأيدي سعودية</div></div>
+            </div>
+            <div class="saudi-card-item">
+                <div class="saudi-card-icon">🚀</div>
+                <div><div class="saudi-card-tt">رؤية 2030</div><div class="saudi-card-st">ندعم التحول الرقمي</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الفوتر -->
     <div class="footer-wrap">
         <div class="footer-about">
-            <div class="footer-about-h">نظام صحي ذكي ومتكامل</div>
-            <p class="footer-about-p">عَوْن يجمع بين الساعة الذكية والجهاز المنزلي لمراقبة صحة عائلتك مع مساعد ذكي وتنبيهات فورية.</p>
+            <div class="footer-about-tag">عن عَوْن</div>
+            <div class="footer-about-h">نظام صحي ذكي مرتبط بساعتك</div>
+            <p class="footer-about-p">عَوْن نظام متكامل يرتبط بساعتك الذكية لمراقبة صحة عائلتك على مدار الساعة — يقيس المؤشرات الحيوية ويتتبع الموقع ويرسل تنبيهات فورية لولي الأمر لحماية من تُحب.</p>
         </div>
+        <div class="feat-section">
+            <div class="feat-label">مميزات عَوْن</div>
+            <div class="feat-tabs">
+                <div class="feat-tab active" onclick="showFeat(0)"><div class="feat-tab-tt">تنبيهات العلاج</div></div>
+                <div class="feat-tab" onclick="showFeat(1)"><div class="feat-tab-tt">تتبع الموقع</div></div>
+                <div class="feat-tab" onclick="showFeat(2)"><div class="feat-tab-tt">المؤشرات الحيوية</div></div>
+                <div class="feat-tab" onclick="showFeat(3)"><div class="feat-tab-tt">كشف السقوط</div></div>
+                <div class="feat-tab" onclick="showFeat(4)"><div class="feat-tab-tt">المساعد الذكي</div></div>
+                <div class="feat-tab" onclick="showFeat(5)"><div class="feat-tab-tt">تنبيهات ولي الأمر</div></div>
+            </div>
+            <div class="feat-panel show" id="fp0"><div class="fp-tt">تنبيهات العلاج</div><div class="fp-ds">تذكيرات تلقائية لمواعيد الأدوية في الأيام والأوقات المحددة لكل فرد في العائلة، مع جرس صوتي وتنبيه فوري.</div></div>
+            <div class="feat-panel" id="fp1"><div class="fp-tt">تتبع الموقع</div><div class="fp-ds">معرفة موقع أفراد العائلة عبر GPS في أي وقت مع تحديث مستمر وخريطة تفاعلية.</div></div>
+            <div class="feat-panel" id="fp2"><div class="fp-tt">المؤشرات الحيوية</div><div class="fp-ds">قياس النبض ومستوى الأكسجين وضغط الدم والخطوات بشكل مستمر عبر الساعة الذكية.</div></div>
+            <div class="feat-panel" id="fp3"><div class="fp-tt">كشف السقوط</div><div class="fp-ds">تكتشف الساعة الذكية السقوط تلقائياً وتحدد موقع الشخص وترسل تنبيهاً فورياً لولي الأمر.</div></div>
+            <div class="feat-panel" id="fp4"><div class="fp-tt">المساعد الذكي</div><div class="fp-ds">مساعد ذكي مدعوم بالذكاء الاصطناعي يجيب على استفساراتك الصحية بدقة، مع قاعدة بيانات احتياطية وحفظ المحادثات.</div></div>
+            <div class="feat-panel" id="fp5"><div class="fp-tt">تنبيهات ولي الأمر</div><div class="fp-ds">يصل ولي الأمر بتنبيهات فورية عند مواعيد الأدوية أو اكتشاف سقوط مع تحديد موقع الشخص والوقت بدقة.</div></div>
+        </div>
+        <div class="footer-divider"></div>
         <div class="footer-bottom">رقم التواصل: 0550936622</div>
     </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="medication-alarm.js"></script>
 <script src="notifications.js"></script>
 <script>
-const SB_URL='https://binqgggvhbbxetasomhv.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbnFnZ2d2aGJieGV0YXNvbWh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjQ1MzYsImV4cCI6MjA5MDkwMDUzNn0.oav0nAJDdPJRpx5qNTY7eA7xqIBi9xqCPsJuRDeloe4';
-const _supabase=supabase.createClient(SB_URL,SB_KEY);
+    const SB_URL='https://binqgggvhbbxetasomhv.supabase.co';
+    const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbnFnZ2d2aGJieGV0YXNvbWh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjQ1MzYsImV4cCI6MjA5MDkwMDUzNn0.oav0nAJDdPJRpx5qNTY7eA7xqIBi9xqCPsJuRDeloe4';
+    const _supabase=supabase.createClient(SB_URL,SB_KEY);
 
-function calcHealthScore(d){
-    let s=0;
-    if(d.heart_rate){const h=d.heart_rate;if(h>=60&&h<=100)s+=30;else if(h>=50&&h<=110)s+=22;else if(h>=40&&h<=130)s+=14;else s+=6}
-    if(d.steps)s+=Math.min((d.steps/10000)*25,25);
-    if(d.battery)s+=Math.min((d.battery/100)*15,15);
-    if(d.oxygen&&d.oxygen>=95)s+=5;
-    if(d.bp_sys&&d.bp_dia){
-        const abnormal=d.bp_sys>=140||d.bp_sys<90||d.bp_dia>=90||d.bp_dia<60;
-        s+=abnormal?8:20;
+    // ===== Health score (matches device-status & app) =====
+    function calcHealthScore(d){
+        let s=0;
+        if(d.heart_rate){
+            const h=d.heart_rate;
+            if(h>=60 && h<=100) s+=30;
+            else if(h>=50 && h<=110) s+=22;
+            else if(h>=40 && h<=130) s+=14;
+            else s+=6;
+        }
+        if(d.steps) s += Math.min((d.steps/10000)*25, 25);
+        if(d.battery) s += Math.min((d.battery/100)*15, 15);
+        if(d.oxygen && d.oxygen>=95) s+=5;
+        if(d.bp_sys && d.bp_dia){
+            const abnormal = d.bp_sys>=140 || d.bp_sys<90 || d.bp_dia>=90 || d.bp_dia<60;
+            s += abnormal ? 8 : 20;
+        }
+        if(d.latitude) s+=5;
+        return Math.round(Math.max(0, Math.min(100, s)));
     }
-    if(d.latitude)s+=5;
-    return Math.round(Math.max(0,Math.min(100,s)));
-}
-function timeAgo(t){
-    if(!t)return'--';
-    const diff=Math.floor((Date.now()-new Date(t).getTime())/1000);
-    if(diff<60)return'الآن';
-    if(diff<3600)return`قبل ${Math.floor(diff/60)} دقيقة`;
-    if(diff<86400)return`قبل ${Math.floor(diff/3600)} ساعة`;
-    return`قبل ${Math.floor(diff/86400)} يوم`;
-}
-async function init(){
-    const{data:{session}}=await _supabase.auth.getSession();
-    if(!session){window.location.href='index.html';return}
-    loadAvatar(session.user.id);
-    loadLive(session.user.id);
-    setInterval(()=>loadLive(session.user.id),15000);
-}
-async function loadAvatar(uid){
-    const{data}=await _supabase.from('users').select('gender').eq('id',uid).single();
-    const src=data?.gender==='female'?'avatar_female.jpg':'avatar_male.jpg';
-    document.querySelectorAll('.nav-avatar').forEach(img=>{img.src=src;img.onload=()=>img.style.opacity='1';if(img.complete)img.style.opacity='1'})
-}
-async function loadLive(uid){
-    const{data}=await _supabase.from('persons').select('devices(*)').eq('user_id',uid).limit(1);
-    if(!data||!data.length||!data[0].devices?.length)return;
-    const d=data[0].devices[0];
-    document.getElementById('hr-val').textContent=d.heart_rate||'--';
-    document.getElementById('bp-val').textContent=(d.bp_sys&&d.bp_dia)?`${d.bp_sys}/${d.bp_dia}`:'--/--';
-    document.getElementById('steps-val').textContent=d.steps?.toLocaleString()||'0';
-    document.getElementById('bat-val').textContent=d.battery!=null?d.battery+'%':'--';
-    const score=calcHealthScore(d);
-    document.getElementById('score-val').textContent=score;
-    document.getElementById('score-bar').style.width=score+'%';
-    document.getElementById('last-update').textContent=timeAgo(d.updated_at);
-}
-async function handleLogout(){await _supabase.auth.signOut();window.location.href='index.html'}
-const menuBtn=document.getElementById('menuBtn'),optionsCard=document.getElementById('optionsCard');
-menuBtn.onclick=e=>{e.stopPropagation();optionsCard.classList.toggle('show')};
-document.onclick=()=>optionsCard.classList.remove('show');
-init();
+
+    function timeAgo(t){
+        if(!t) return '--';
+        const diff = Math.floor((Date.now()-new Date(t).getTime())/1000);
+        if(diff<60) return 'الآن';
+        if(diff<3600) return `قبل ${Math.floor(diff/60)} دقيقة`;
+        if(diff<86400) return `قبل ${Math.floor(diff/3600)} ساعة`;
+        return `قبل ${Math.floor(diff/86400)} يوم`;
+    }
+
+    async function init(){
+        const { data:{ session } } = await _supabase.auth.getSession();
+        if(!session){ window.location.href='index.html'; return; }
+        loadAvatar(session.user.id);
+        loadLive(session.user.id);
+        setInterval(()=>loadLive(session.user.id), 15000);
+    }
+
+    async function loadAvatar(userId){
+        const { data } = await _supabase.from('users').select('gender').eq('id',userId).single();
+        const src = data?.gender==='female' ? 'avatar_female.jpg' : 'avatar_male.jpg';
+        document.querySelectorAll('.nav-avatar').forEach(img=>{
+            img.src=src;
+            img.onload=()=>img.style.opacity='1';
+            if(img.complete) img.style.opacity='1';
+        });
+    }
+
+    async function loadLive(uid){
+        const { data } = await _supabase.from('persons').select('devices(*)').eq('user_id',uid).limit(1);
+        if(!data || !data.length || !data[0].devices?.length) return;
+        const d = data[0].devices[0];
+
+        document.getElementById('hr-val').textContent    = d.heart_rate || '--';
+        document.getElementById('bp-val').textContent    = (d.bp_sys && d.bp_dia) ? `${d.bp_sys}/${d.bp_dia}` : '--/--';
+        document.getElementById('steps-val').textContent = (d.steps!=null) ? d.steps.toLocaleString() : '0';
+        document.getElementById('bat-val').textContent   = (d.battery!=null) ? d.battery+'%' : '--';
+
+        const score = calcHealthScore(d);
+        document.getElementById('score-val').textContent = score;
+        document.getElementById('score-bar').style.width = score+'%';
+        document.getElementById('last-update').textContent = timeAgo(d.updated_at);
+    }
+
+    async function handleLogout(){
+        await _supabase.auth.signOut();
+        window.location.href='index.html';
+    }
+
+    function showFeat(i){
+        document.querySelectorAll('.feat-tab').forEach((t,j)=>t.classList.toggle('active', j===i));
+        document.querySelectorAll('.feat-panel').forEach((p,j)=>p.classList.toggle('show',  j===i));
+    }
+
+    const menuBtn=document.getElementById('menuBtn');
+    const optionsCard=document.getElementById('optionsCard');
+    menuBtn.addEventListener('click', e=>{ e.stopPropagation(); optionsCard.classList.toggle('show'); });
+    document.addEventListener('click', e=>{
+        if(!optionsCard.contains(e.target) && e.target!==menuBtn) optionsCard.classList.remove('show');
+    });
+
+    init();
 </script>
 </body>
 </html>
