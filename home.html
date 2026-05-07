@@ -34,16 +34,15 @@ body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a5
 .hero-title em{font-style:normal;color:#a8ddf0}
 .hero-desc{font-size:13px;opacity:.85;line-height:1.8;font-weight:300}
 
-/* Live summary card */
 .live-summary{margin:24px 24px 0;background:white;border-radius:18px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
 .live-summary-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .live-summary-header h3{font-size:16px;font-weight:800;color:#406E8F;display:flex;align-items:center;gap:8px}
 .live-dot{width:8px;height:8px;border-radius:50%;background:#1D9E75;animation:pulse 1.5s infinite}
 .live-summary-time{font-size:11px;color:#999}
-.live-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.live-item{text-align:center;padding:14px 8px;background:#f8fafc;border-radius:12px;border:1px solid #e8f0f5}
-.live-icon{font-size:24px;margin-bottom:6px}
-.live-value{font-size:20px;font-weight:900;color:#0a2a52}
+.live-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.live-item{text-align:center;padding:14px 6px;background:#f8fafc;border-radius:12px;border:1px solid #e8f0f5}
+.live-icon{font-size:22px;margin-bottom:6px}
+.live-value{font-size:18px;font-weight:900;color:#0a2a52}
 .live-unit{font-size:10px;color:#999;margin-top:2px}
 .health-score-bar{margin-top:16px;height:8px;border-radius:4px;background:#f0f0f0;overflow:hidden}
 .health-score-fill{height:100%;background:linear-gradient(to left,#1D9E75,#406E8F);border-radius:4px;transition:width 1s}
@@ -73,7 +72,7 @@ body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a5
 .footer-about-p{font-size:12px;color:rgba(255,255,255,.75);font-weight:300;line-height:1.9}
 .footer-bottom{padding:20px 24px;text-align:center;color:rgba(255,255,255,.8);font-size:13px}
 
-@media(max-width:600px){.live-grid{grid-template-columns:repeat(2,1fr)}.hero-title{font-size:28px}.quick-access{grid-template-columns:1fr}}
+@media(max-width:700px){.live-grid{grid-template-columns:repeat(3,1fr)}.hero-title{font-size:28px}.quick-access{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -107,7 +106,6 @@ body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a5
         </div>
     </div>
 
-    <!-- Live Summary -->
     <div class="live-summary">
         <div class="live-summary-header">
             <h3><span class="live-dot"></span>الحالة الحالية</h3>
@@ -115,6 +113,7 @@ body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a5
         </div>
         <div class="live-grid">
             <div class="live-item"><div class="live-icon">❤️</div><div class="live-value" id="hr-val">--</div><div class="live-unit">BPM</div></div>
+            <div class="live-item"><div class="live-icon">🩺</div><div class="live-value" id="bp-val">--/--</div><div class="live-unit">ضغط الدم</div></div>
             <div class="live-item"><div class="live-icon">👟</div><div class="live-value" id="steps-val">--</div><div class="live-unit">خطوة</div></div>
             <div class="live-item"><div class="live-icon">🔋</div><div class="live-value" id="bat-val">--</div><div class="live-unit">بطارية</div></div>
             <div class="live-item"><div class="live-icon">💯</div><div class="live-value" id="score-val">--</div><div class="live-unit">مؤشر</div></div>
@@ -157,7 +156,8 @@ body{font-family:'Tajawal','AraHamah',sans-serif;background:#f4f7fa;color:#0a2a5
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<script src="medication-alarm.js"></script>
+<script src="notifications.js"></script>
 <script>
 const SB_URL='https://binqgggvhbbxetasomhv.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbnFnZ2d2aGJieGV0YXNvbWh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjQ1MzYsImV4cCI6MjA5MDkwMDUzNn0.oav0nAJDdPJRpx5qNTY7eA7xqIBi9xqCPsJuRDeloe4';
@@ -165,14 +165,17 @@ const _supabase=supabase.createClient(SB_URL,SB_KEY);
 
 function calcHealthScore(d){
     let s=0;
-    if(d.heart_rate){const h=d.heart_rate;if(h>=60&&h<=100)s+=40;else if(h>=50&&h<=110)s+=30;else if(h>=40&&h<=130)s+=20;else s+=10}
-    if(d.steps)s+=Math.min((d.steps/10000)*30,30);
-    if(d.battery)s+=Math.min((d.battery/100)*20,20);
+    if(d.heart_rate){const h=d.heart_rate;if(h>=60&&h<=100)s+=30;else if(h>=50&&h<=110)s+=22;else if(h>=40&&h<=130)s+=14;else s+=6}
+    if(d.steps)s+=Math.min((d.steps/10000)*25,25);
+    if(d.battery)s+=Math.min((d.battery/100)*15,15);
     if(d.oxygen&&d.oxygen>=95)s+=5;
+    if(d.bp_sys&&d.bp_dia){
+        const abnormal=d.bp_sys>=140||d.bp_sys<90||d.bp_dia>=90||d.bp_dia<60;
+        s+=abnormal?8:20;
+    }
     if(d.latitude)s+=5;
     return Math.round(Math.max(0,Math.min(100,s)));
 }
-
 function timeAgo(t){
     if(!t)return'--';
     const diff=Math.floor((Date.now()-new Date(t).getTime())/1000);
@@ -181,7 +184,6 @@ function timeAgo(t){
     if(diff<86400)return`قبل ${Math.floor(diff/3600)} ساعة`;
     return`قبل ${Math.floor(diff/86400)} يوم`;
 }
-
 async function init(){
     const{data:{session}}=await _supabase.auth.getSession();
     if(!session){window.location.href='index.html';return}
@@ -199,6 +201,7 @@ async function loadLive(uid){
     if(!data||!data.length||!data[0].devices?.length)return;
     const d=data[0].devices[0];
     document.getElementById('hr-val').textContent=d.heart_rate||'--';
+    document.getElementById('bp-val').textContent=(d.bp_sys&&d.bp_dia)?`${d.bp_sys}/${d.bp_dia}`:'--/--';
     document.getElementById('steps-val').textContent=d.steps?.toLocaleString()||'0';
     document.getElementById('bat-val').textContent=d.battery!=null?d.battery+'%':'--';
     const score=calcHealthScore(d);
@@ -212,6 +215,5 @@ menuBtn.onclick=e=>{e.stopPropagation();optionsCard.classList.toggle('show')};
 document.onclick=()=>optionsCard.classList.remove('show');
 init();
 </script>
-<script src="notifications.js"></script>
 </body>
 </html>
